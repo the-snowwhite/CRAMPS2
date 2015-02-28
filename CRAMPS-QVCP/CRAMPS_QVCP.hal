@@ -147,20 +147,20 @@ newcomp fdm-f1 timer=100
 newpin fdm-f1 fdm-f1.set float io
 ready fdm-f1
 
-newcomp fdm-f2 timer=100
-newpin fdm-f2 fdm-f2.set float io
-ready fdm-f2
+#newcomp fdm-f2 timer=100
+#newpin fdm-f2 fdm-f2.set float io
+#ready fdm-f2
 
-newcomp fdm-f3 timer=100
-newpin fdm-f3 fdm-f3.set float io
-ready fdm-f3
+#newcomp fdm-f3 timer=100
+#newpin fdm-f3 fdm-f3.set float io
+#ready fdm-f3
 
-newcomp fdm-l0 timer=100
-newpin fdm-l0 fdm-l0.r float io
-newpin fdm-l0 fdm-l0.g float io
-newpin fdm-l0 fdm-l0.b float io
-newpin fdm-l0 fdm-l0.w float io
-ready  fdm-l0
+#newcomp fdm-l0 timer=100
+#newpin fdm-l0 fdm-l0.r float io
+#newpin fdm-l0 fdm-l0.g float io
+#newpin fdm-l0 fdm-l0.b float io
+#newpin fdm-l0 fdm-l0.w float io
+#ready  fdm-l0
 
 newcomp fdm-e0-pid timer=100
 newpin fdm-e0-pid fdm-e0-pid.Pgain              float io
