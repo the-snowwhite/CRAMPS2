@@ -1,3 +1,3 @@
 # CRAMPS2
-CRAMPS2 QTQuickVCP Machinekit configs and guide
-see the [Wiki](https://github.com/the-snowwhite/CRAMPS2/wiki)
+CRAMPS2 QTQuickVCP Machinekit configs for Machineface UI
+![](images/Machineface-2015-03-01_00:06:39.png)
