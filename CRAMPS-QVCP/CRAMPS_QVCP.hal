@@ -364,12 +364,6 @@ net emcmot.00.enable => bb_gpio.p9.out-25
 # ################
 # Limit Switches
 # ################
-#newsig limit-x-min bit
-#newsig limit-x-max bit
-#newsig limit-y-min bit
-#newsig limit-y-max bit
-#newsig limit-z-min bit
-#newsig limit-z-max bit
 
 net limit-x-min <= bb_gpio.p8.in-08
 net limit-x-max <= bb_gpio.p8.in-07
