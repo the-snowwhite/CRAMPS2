@@ -266,10 +266,10 @@ newpin fdm-ve-params fdm-ve-params.extrude-scale    float io
 newpin fdm-ve-params fdm-ve-params.accel-adj-gain   float io
 ready  fdm-ve-params
 
-newcomp gantry-config timer=100
-newpin gantry-config gantry-config.offset-left  float io
-newpin gantry-config gantry-config.offset-right float io
-ready gantry-config
+#newcomp gantry-config timer=100
+#newpin gantry-config gantry-config.offset-left  float io
+#newpin gantry-config gantry-config.offset-right float io
+#ready gantry-config
     
 newcomp fdm-e0-pid timer=100
 newpin fdm-e0-pid fdm-e0-pid.Pgain              float io
@@ -1241,4 +1241,3 @@ net ve.retract-len     <=> storage.retract.length
 net ve.filament-dia    <=> storage.filament.diameter
 net ve.jog-velocity    <=> storage.extruder.jog-velocity
 setp storage.read-trigger 1 # trigger read
-
