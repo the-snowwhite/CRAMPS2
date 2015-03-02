@@ -20,7 +20,7 @@ loadrt trivkins
 # motion controller, get name and thread periods from ini file
 # trajectory planner
 loadrt tp
-loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=5 num_aio=50 num_dio=20 tp=tp kins=trivkins
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=4 num_aio=50 num_dio=20 tp=tp kins=trivkins
 
 # THREADS
 #loadrt threads name1=run-thread period1=50170000
