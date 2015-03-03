@@ -89,7 +89,7 @@ just rerun it. You do not have to reboot at this point]
 
 11.b modify CRAMPS_QVCP.ini
 
-	machinekit@beaglebone:~$ leafpad ~/CRAMPS2/CRAMPS-QVCP/CRAMPS_QVCP.ini
+	machinekit@beaglebone:~$ leafpad ~/CRAMPS2/configs/ARM/Beaglebone/CRAMPS_QVCP.ini
 	
 	machine limits, home, home offset
 	scale
@@ -98,7 +98,7 @@ just rerun it. You do not have to reboot at this point]
 11.c
 
 	make script file executable:
-	machinekit@beaglebone:~$ chmod +x ~/CRAMPS2/CRAMPS-QVCP/CRAMPS_QVCP.py
+	machinekit@beaglebone:~$ chmod +x ~/CRAMPS2/configs/ARM/Beaglebone/run.py
 	 
 12.a before you reboot you might would like to change the network hostname to something other than the default beaglebone, also you may want to connect it to your network workgroup/localdomain 
 
