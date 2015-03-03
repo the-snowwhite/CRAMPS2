@@ -130,11 +130,11 @@ ie:
 
 13.b then run the startup script:
 
-	machinekit@BBB:~$ ~/CRAMPS2/CRAMPS-QVCP/CRAMPS_QVCP.py
+	machinekit@BBB:~$ ~/CRAMPS2/configs/ARM/Beaglebone/CRAMPS-QVCP/run.py
  
  Your first run should look somthing like this:
 
-	machinekit@BBB:~$ ~/CRAMPS2/CRAMPS-QVCP/CRAMPS_QVCP.py
+	machinekit@BBB:~$ ~/CRAMPS2/configs/ARM/Beaglebone/CRAMPS-QVCP/run.py
 	loading cramps2_cape.bbio... Loading cape-universal overlay
 	Loading cape-bone-iio overlay
 	done
@@ -145,7 +145,7 @@ ie:
 	starting configserver... done
 	starting linuxcnc... done
 	LINUXCNC - 2.7.0~pre0
-	Machine configuration directory is '/home/machinekit/CRAMPS2/CRAMPS-QVCP'
+	Machine configuration directory is '/home/machinekit/CRAMPS2/configs/ARM/Beaglebone/CRAMPS-QVCP'
 	Machine configuration file is 'CRAMPS_QVCP.ini'
 	Starting LinuxCNC...
 	io started
