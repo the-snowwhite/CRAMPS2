@@ -48,7 +48,6 @@ loadrt wcomp names=wcomp.e0-temp-range,wcomp.hbp-temp-range,wcomp.e0-temp-limit,
 loadrt lowpass names=lowpass.e0-temp,lowpass.hbp-temp
 loadrt sum2 names=sum2.e0-temp-range-neg,sum2.e0-temp-range-pos,sum2.hbp-temp-range-neg,sum2.hbp-temp-range-pos,sum2.extrude-rate-adj
 loadrt and2 names=and2.e0temp-val-50-act,and2.e0temp-80-act
-loadrt or2 names=or2.e0-fan-act,or2.ve-jog-enable
 loadrt mux2 names=mux2.exp0-pwm,mux2.ve-base-vel,mux2.jog-velocity-signed,mux2.exp0-val
 loadrt logic names=estopchain,and3.e0-no-error,and3.hbp-no-error personality=0x106,0x103,0x103 # and 8 and 3 inputs
 loadrt comp names=comp.exp0-temp,comp.hbp-hot,comp.e0-active,comp.e0-val-set,comp.e0-temp,comp.hbp-active
@@ -63,7 +62,7 @@ loadrt div2 names=div2.extrude-rate,div2.retract-time,div2.ve-jog-time
 loadrt mux4 names=mux4.ve
 loadrt oneshot names=oneshot.feed-hold,oneshot.retract,oneshot.ve-jog
 loadrt ddt names=ddt.extruder-accel
-#loadrt or2 names=or2.ve-jog-enable
+loadrt or2 names=or2.e0-fan-act,or2.ve-jog-enable
 loadrt abs names=abs.nozzle-vel
 loadrt reset names=reset.extruder-en1,reset.extruder-en2
 
