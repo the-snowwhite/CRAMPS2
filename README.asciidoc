@@ -1,0 +1,9 @@
+# CRAMPS2
+
+CRAMPS2 QTQuickVCP Machinekit setup guide and configs for Machineface UI  
+
+	added -v option for video in run scripts
+
+https://github.com/the-snowwhite/CRAMPS2/wiki[See Wiki]
+
+image::images/Machineface.png[]
