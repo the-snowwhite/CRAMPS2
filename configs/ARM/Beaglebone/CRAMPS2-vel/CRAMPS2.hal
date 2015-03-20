@@ -16,11 +16,12 @@ loadusr -W haltalk
 
 # kinematics
 loadrt trivkins
+loadrt tp
 
 # motion controller, get name and thread periods from ini file
 # trajectory planner
-loadrt tp
-loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=4 num_aio=50 num_dio=20 tp=tp kins=trivkins
+#loadrt tp
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=4 num_aio=50 num_dio=20 #[TRAJ]AXES kins=trivkins 
 
 # THREADS
 #loadrt threads name1=run-thread period1=50170000
@@ -60,7 +61,7 @@ loadrt hypot names=hypot.nozzle-vel
 loadrt mult2 names=mult2.nozzle-discharge,mult2.filament-dia,mult2.filament-area,mult2.extrude-accel-adj,mult2.ve-jog-dtg,mult2.retract-vel-neg,mult2.extrude-rate-scaled,mult2.jog-velocity-neg
 loadrt div2 names=div2.extrude-rate,div2.retract-time,div2.ve-jog-time
 loadrt mux4 names=mux4.ve
-loadrt oneshot names=oneshot.feed-hold,oneshot.retract,oneshot.ve-jog
+loadrt oneshot names=oneshot.retract,oneshot.ve-jog
 loadrt ddt names=ddt.extruder-accel
 loadrt or2 names=or2.e0-fan-act,or2.ve-jog-enable
 loadrt abs names=abs.nozzle-vel
@@ -153,10 +154,9 @@ addf mult2.ve-jog-dtg                       servo-thread
 addf mult2.retract-vel-neg                  servo-thread
 addf reset.extruder-en1                     servo-thread
 addf reset.extruder-en2                     servo-thread
-addf mux4.ve                                servo-thread
 addf div2.retract-time                      servo-thread
-addf oneshot.feed-hold                      servo-thread
 addf oneshot.retract                        servo-thread
+addf mux4.ve                                servo-thread
 
 # Update functions
 #addf   gantry.z.write                       servo-thread
@@ -254,7 +254,6 @@ newpin fdm-ve-jog fdm-ve-jog.trigger        bit   io
 newpin fdm-ve-jog fdm-ve-jog.continous      bit   out
 newpin fdm-ve-jog fdm-ve-jog.dtg            float in
 newpin fdm-ve-jog fdm-ve-jog.max-velocity   float in
-newpin fdm-ve-jog fdm-ve-jog.extruder-en    bit   io
 ready  fdm-ve-jog
 
 newcomp fdm-ve-params timer=100
@@ -416,7 +415,7 @@ net ve.nozzle-vel-signed => abs.nozzle-vel.in
 net ve.nozzle-vel        <= abs.nozzle-vel.out
 
 # multiply area with speed and we get discharge (mm^3 per second)
-net ve.line-area        => mult2.nozzle-discharge.in0
+net ve.cross-section    => mult2.nozzle-discharge.in0
 net ve.nozzle-vel       => mult2.nozzle-discharge.in1
 net ve.nozzle-discharge <= mult2.nozzle-discharge.out
 
@@ -528,20 +527,14 @@ net ve.retract-time   <= div2.retract-time.out
 # sel combination is 11
 # when sel1 set to "0" meaning decoupling motion with extrusion" then the falling edge
 # will trigger a 01 combination, meaning a retract
-net ve.extruder-en => oneshot.feed-hold.in oneshot.retract.in mux4.ve.sel1
-net ve.feed-hold oneshot.feed-hold.out => motion.feed-hold
-net retract oneshot.retract.out => mux4.ve.sel0
+net ve.extruder-en => oneshot.retract.in mux4.ve.sel1
+net ve.retract oneshot.retract.out => mux4.ve.sel0 motion.feed-hold
 # trigger a retract/unretract move when extruder is enable or disabled
 setp oneshot.retract.rising 1
 setp oneshot.retract.falling 1
 setp oneshot.retract.retriggerable 1
-# wait unretract to finish before continuing move
-setp oneshot.feed-hold.rising 1
-setp oneshot.feed-hold.falling 1
-setp oneshot.feed-hold.retriggerable 1
-#setp oneshot.0.width 0.0
 #by setting the width, the automatic retract/precharge can be disabled
-net ve.retract-time => oneshot.retract.width oneshot.feed-hold.width
+net ve.retract-time => oneshot.retract.width
 
 net ve.extrude-vel => hpg.stepgen.03.velocity-cmd
 sets ve.retract-len [EXTRUDER_0]RETRACT_LEN
@@ -1107,42 +1100,45 @@ setp limit1.hbp-heater.min 0
 # ##################################################
 
 net hbp.temp.set         <= motion.analog-out-io-00
-#net hbc.temp.set         <= motion.analog-out-io-01
+#net hbc.temp.set        <= motion.analog-out-io-01
 net e0.temp.set          <= motion.analog-out-io-02
 net f0.set               <= motion.analog-out-io-12
 net f1.set               <= motion.analog-out-io-13
-#net f2.set               <= motion.analog-out-io-14
-#net f3.set               <= motion.analog-out-io-15
-#net l0.r                 <= motion.analog-out-io-26
-#net l0.g                 <= motion.analog-out-io-27
-#net l0.b                 <= motion.analog-out-io-28
-#net l0.w                 <= motion.analog-out-io-29
-#net probe.sel-f          <= motion.analog-out-38
-net ve.line-area         <= motion.analog-out-41
-net ve.jog-velocity      <= motion.analog-out-io-42
-net ve.jog-distance      <= motion.analog-out-io-43
+#net f2.set              <= motion.analog-out-io-14
+#net f3.set              <= motion.analog-out-io-15
+#net l0.r                <= motion.analog-out-io-26
+#net l0.g                <= motion.analog-out-io-27
+#net l0.b                <= motion.analog-out-io-28
+#net l0.w                <= motion.analog-out-io-29
+#net probe.sel-f         <= motion.analog-out-38
+net ve.cross-section     <= motion.analog-out-41
+net ve.line-width        <= motion.analog-out-io-42
+net ve.line-height       <= motion.analog-out-io-43
 net ve.filament-dia      <= motion.analog-out-io-44
+net ve.jog-velocity      <= motion.analog-out-io-45
+net ve.jog-distance      <= motion.analog-out-io-46
 
-#net probe.enable         <= motion.digital-out-00
+#net probe.enable        <= motion.digital-out-00
 net ve.extruder-en       <= motion.digital-out-io-01
 net ve.jog-trigger       <= motion.digital-out-io-02
 
 net hbp.temp.meas        => motion.analog-in-00
-#net hbc.temp.meas        => motion.analog-in-01
+#net hbc.temp.meas       => motion.analog-in-01
 net e0.temp.meas         => motion.analog-in-02
 net f0.set               => motion.analog-in-12
 net f1.set               => motion.analog-in-13
-#net f2.set               => motion.analog-in-14
-#net f3.set               => motion.analog-in-15
-#net l0.r                 => motion.analog-in-26
-#net l0.g                 => motion.analog-in-27
-#net l0.b                 => motion.analog-in-28
-#net l0.w                 => motion.analog-in-29
+#net f2.set              => motion.analog-in-14
+#net f3.set              => motion.analog-in-15
+#net l0.r                => motion.analog-in-26
+#net l0.g                => motion.analog-in-27
+#net l0.b                => motion.analog-in-28
+#net l0.w                => motion.analog-in-29
 
-net hbp.temp.in-range   => motion.digital-in-00
+net hbp.temp.in-range    => motion.digital-in-00
 #net hbc.temp.in-range   => motion.digital-in-01
-net e0.temp.in-range    => motion.digital-in-02
-net ve.jog-trigger      => motion.digital-in-12
+net e0.temp.in-range     => motion.digital-in-02
+net ve.retract           => motion.digital-in-12
+net ve.jog-trigger       => motion.digital-in-13
 
 # ##################################################
 # Estop chain #, watchdog and charge-pump
@@ -1203,7 +1199,6 @@ net ve.jog-velocity    <=> fdm-ve-jog.velocity
 net ve.jog-distance    <=> fdm-ve-jog.distance
 net ve.jog-direction   <=> fdm-ve-jog.direction
 net ve.jog-dtg          => fdm-ve-jog.dtg
-net ve.extruder-en     <=> fdm-ve-jog.extruder-en
 setp fdm-ve-jog.max-velocity [AXIS_3]MAX_VELOCITY
 net ve.filament-dia             <=> fdm-ve-params.filament-dia
 net ve.retract-vel              <=> fdm-ve-params.retract-vel
@@ -1240,3 +1235,4 @@ net ve.retract-len     <=> storage.retract.length
 net ve.filament-dia    <=> storage.filament.diameter
 net ve.jog-velocity    <=> storage.extruder.jog-velocity
 setp storage.read-trigger 1 # trigger read
+
