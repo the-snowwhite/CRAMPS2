@@ -333,7 +333,7 @@ net emcmot.01.pos-cmd => gantry.y.position-cmd
 net motor.01.pos-cmd <= gantry.y.joint.00.pos-cmd
 net motor.01.pos-cmd => hpg.stepgen.01.position-cmd
 
-net emcmot.01.pos-fb <= gantry.z.position-fb
+net emcmot.01.pos-fb <= gantry.y.position-fb
 net emcmot.01.pos-fb => axis.1.motor-pos-fb
 net motor.01.pos-fb <= hpg.stepgen.01.position-fb
 net motor.01.pos-fb => gantry.y.joint.00.pos-fb
@@ -403,15 +403,15 @@ sets emcmot.03.enable FALSE
 net emcmot.03.enable <= axis.3.amp-enable-out
 net emcmot.03.enable => hpg.stepgen.03.enable
 
-#setp gantry.z.search-vel            [AXIS_2]HOME_SEARCH_VEL
+#setp gantry.y.search-vel            [AXIS_2]HOME_SEARCH_VEL
 
 # position command and feedback
 net emcmot.03.pos-cmd <= axis.3.motor-pos-cmd
 net emcmot.03.pos-cmd => hpg.stepgen.03.position-cmd
-#net motor.03.pos-cmd <= gantry.z.joint.00.pos-cmd
+#net motor.03.pos-cmd <= gantry.y.joint.00.pos-cmd
 #net motor.03.pos-cmd => hpg.stepgen.02.position-cmd
 
-#net emcmot.03.pos-fb <= gantry.z.position-fb
+#net emcmot.03.pos-fb <= gantry.y.position-fb
 #net emcmot.03.pos-fb => axis.2.motor-pos-fb
 net motor.03.pos-fb <= hpg.stepgen.03.position-fb
 net motor.03.pos-fb => axis.3.motor-pos-fb
