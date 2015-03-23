@@ -656,12 +656,16 @@ newsig home-y         bit
 newsig home-offset-yr float
 newsig home-offset-yl float
 
-net limit-x-min <= bb_gpio.p8.in-08
-net limit-x-max <= bb_gpio.p8.in-07
-net limit-y-min <= bb_gpio.p8.in-10
-net limit-y-max <= bb_gpio.p8.in-09
-net limit-z-min <= bb_gpio.p9.in-13
-net limit-z-max <= bb_gpio.p9.in-11
+#net limit-x-min <= bb_gpio.p8.in-08
+net limit-x-home <= bb_gpio.p8.in-08
+#net limit-x-max <= bb_gpio.p8.in-07
+#net limit-y-min <= bb_gpio.p8.in-10
+#net limit-y-max <= bb_gpio.p8.in-09
+net limit-yr-home <= bb_gpio.p8.in-10
+net limit-yl-home <= bb_gpio.p8.in-09
+#net limit-z-min <= bb_gpio.p9.in-13
+net limit-z-home <= bb_gpio.p9.in-13
+#net limit-z-max <= bb_gpio.p9.in-11
 
 # Adjust as needed for your switch polarity
 setp bb_gpio.p8.in-08.invert 1
@@ -678,13 +682,13 @@ net home-y      <= gantry.y.home
 net limit-x-home => axis.0.home-sw-in
 #net limit-x-min => axis.0.neg-lim-sw-in
 #net limit-x-max => axis.0.pos-lim-sw-in
-net limit-y-home => axis.1.home-sw-in
 #net limit-y-min => axis.1.neg-lim-sw-in
 #net limit-y-max => axis.1.pos-lim-sw-in
 #net limit-z-min => gantry.y.joint.00.home
-net limit-zr-home => gantry.y.joint.00.home
-net limit-zl-home => gantry.y.joint.01.home
-net home-y        => axis.2.home-sw-in
+net limit-z-home => axis.2.home-sw-in
+net limit-yr-home => gantry.y.joint.00.home
+net limit-yl-home => gantry.y.joint.01.home
+net home-y        => axis.1.home-sw-in
 #net limit-z-min => axis.2.home-sw-in
 #net limit-z-min => axis.2.neg-lim-sw-ingggg
 #net limit-z-max => axis.2.pos-lim-sw-in
