@@ -796,6 +796,7 @@ net e0.therm-ok               <= thermistor-check.e0.no-error
 net e0.therm-ok      => and3.e0-no-error.in-00
 net e0.temp.in-limit => and3.e0-no-error.in-01
 net temp-ok          => and3.e0-no-error.in-02
+sets temp-ok            1
 net e0.no-error      <= and3.e0-no-error.and
 net e0.no-error      => not.e0-error.in
 net e0.error         <= not.e0-error.out
