@@ -361,10 +361,10 @@ setp hpg.stepgen.01.dirpin          [AXIS_1]DIRPIN_RIGHT
 # ################
 
 # axis enable chain
-#newsig emcmot.02.enable bit
-#sets emcmot.02.enable FALSE
+#newsig emcmot.01.enable bit
+#sets emcmot.01.enable FALSE
 
-#net emcmot.02.enable <= axis.1.amp-enable-out 
+#net emcmot.01.enable <= axis.1.amp-enable-out 
 net emcmot.01.enable => hpg.stepgen.02.enable
 
 # position command and feedback
@@ -376,20 +376,20 @@ net motor.02.pos-fb => gantry.y.joint.01.pos-fb
 
 
 # timing parameters
-setp hpg.stepgen.01.dirsetup        [AXIS_1]DIRSETUP
-setp hpg.stepgen.01.dirhold         [AXIS_1]DIRHOLD
+setp hpg.stepgen.02.dirsetup        [AXIS_1]DIRSETUP
+setp hpg.stepgen.02.dirhold         [AXIS_1]DIRHOLD
 
-setp hpg.stepgen.01.steplen         [AXIS_1]STEPLEN
-setp hpg.stepgen.01.stepspace       [AXIS_1]STEPSPACE
+setp hpg.stepgen.02.steplen         [AXIS_1]STEPLEN
+setp hpg.stepgen.02.stepspace       [AXIS_1]STEPSPACE
 
-setp hpg.stepgen.01.position-scale  [AXIS_1]SCALE
+setp hpg.stepgen.02.position-scale  [AXIS_1]SCALE
 
-setp hpg.stepgen.01.maxvel          [AXIS_1]STEPGEN_MAX_VEL
-setp hpg.stepgen.01.maxaccel        [AXIS_1]STEPGEN_MAX_ACC
+setp hpg.stepgen.02.maxvel          [AXIS_1]STEPGEN_MAX_VEL
+setp hpg.stepgen.02.maxaccel        [AXIS_1]STEPGEN_MAX_ACC
 
-#setp hpg.stepgen.01.step_type       0
-setp hpg.stepgen.01.steppin         [AXIS_1]STEPPIN_LEFT
-setp hpg.stepgen.01.dirpin          [AXIS_1]DIRPIN_LEFT
+#setp hpg.stepgen.02.step_type       0
+setp hpg.stepgen.02.steppin         [AXIS_1]STEPPIN_LEFT
+setp hpg.stepgen.02.dirpin          [AXIS_1]DIRPIN_LEFT
 
 
 # ################
@@ -408,13 +408,13 @@ net emcmot.02.enable => hpg.stepgen.03.enable
 # position command and feedback
 net emcmot.02.pos-cmd <= axis.2.motor-pos-cmd
 net emcmot.02.pos-cmd => hpg.stepgen.03.position-cmd
-#net motor.02.pos-cmd <= gantry.y.joint.00.pos-cmd
-#net motor.02.pos-cmd => hpg.stepgen.02.position-cmd
+#net motor.02.pos-cmd <= gantry.y.joint.01.pos-cmd
+#net motor.02.pos-cmd => hpg.stepgen.03.position-cmd
 
-#net emcmot.03.pos-fb <= gantry.y.position-fb
-#net emcmot.03.pos-fb => axis.2.motor-pos-fb
-net motor.02.pos-fb <= hpg.stepgen.03.position-fb
-net motor.02.pos-fb => axis.2.motor-pos-fb
+#net emcmot.02.pos-fb <= gantry.y.position-fb
+#net emcmot.02.pos-fb => axis.2.motor-pos-fb
+net motor.03.pos-fb <= hpg.stepgen.03.position-fb
+net motor.03.pos-fb => axis.2.motor-pos-fb
 
 
 # timing parameters
