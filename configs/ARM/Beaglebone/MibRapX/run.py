@@ -12,15 +12,24 @@ launcher.register_exit_handler()
 #launcher.set_debug_level(5)
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
+parser = argparse.ArgumentParser(description='This is the MibRap-X run script '
+                                 'it demonstrates how a run script could look like '
+                                 'and of course starts the MibRapX config')
+
+parser.add_argument('-v', '--video', help='Starts the video server', action='store_true')
+
+args = parser.parse_args()
+
 try:
     launcher.check_installation()
     launcher.cleanup_session()
     launcher.load_bbio_file('paralell_cape3.bbio')
     launcher.install_comp('thermistor_check.comp')
     launcher.install_comp('reset.comp')
-    launcher.install_comp('led_dim.comp')
-    launcher.start_process("configserver -n Uni-print-3D ~/Machineface")
-    launcher.start_process('linuxcnc UNIPRINT-3D.ini')
+    launcher.start_process("configserver -n MibRap-X ~/Machineface")
+    if args.video:
+        launcher.start_process('videoserver --ini video.ini Webcam1')
+    launcher.start_process('linuxcnc MibRapX.ini')
 except subprocess.CalledProcessError:
     launcher.end_session()
     sys.exit(1)
