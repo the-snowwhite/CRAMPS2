@@ -748,6 +748,7 @@ newsig e0.active                 bit
 net e0.temp.measr  => lowpass.e0-temp.in
 net e0.temp.meas   <= lowpass.e0-temp.out
 setp lowpass.e0-temp.gain 0.003
+net e0.temp.measr   <= Therm.ch-04.value
 
 # PID
 net emcmot.00.enable  =>   pid.e0-temp.enable
@@ -869,6 +870,7 @@ newsig hbp.active                bit
 net hbp.temp.measr  => lowpass.hbp-temp.in
 net hbp.temp.meas   <= lowpass.hbp-temp.out
 setp lowpass.hbp-temp.gain 0.003
+net hbp.temp.measr   <= Therm.ch-05.value
 
 # PID
 net emcmot.00.enable => pid.hbp-temp.enable
