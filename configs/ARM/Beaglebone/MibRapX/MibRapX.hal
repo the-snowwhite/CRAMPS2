@@ -70,7 +70,7 @@ addf   bb_gpio.read                         servo-thread
 addf   gantry.y.read                        servo-thread
 addf   motion-command-handler               servo-thread
 #addf   f2u.probe-sel                        servo-thread
-addf   mux-gen.00                           servo-thread
+#addf   mux-gen.00                           servo-thread
 #addf   and2.probe                           servo-thread
 addf   motion-controller                    servo-thread
 # HBP
