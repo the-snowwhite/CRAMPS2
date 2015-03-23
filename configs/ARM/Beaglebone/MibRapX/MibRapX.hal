@@ -46,7 +46,7 @@ loadrt not names=not.e0-temp-range,not.hbp-temp-range,not.e0-error,not.hbp-error
 loadrt wcomp names=wcomp.e0-temp-range,wcomp.hbp-temp-range,wcomp.e0-temp-limit,wcomp.hbp-temp-limit
 loadrt lowpass names=lowpass.e0-temp,lowpass.hbp-temp
 loadrt sum2 names=sum2.e0-temp-range-neg,sum2.e0-temp-range-pos,sum2.hbp-temp-range-neg,sum2.hbp-temp-range-pos,sum2.extrude-rate-adj
-loadrt and2 names=and2.probe
+#loadrt and2 names=and2.probe
 loadrt mux2 names=mux2.exp0-pwm,mux2.ve-base-vel,mux2.jog-velocity-signed
 loadrt logic names=estopchain,and3.e0-no-error,and3.hbp-no-error personality=0x106,0x103,0x103 # and 8 and 3 inputs
 loadrt comp names=comp.exp0-temp,comp.hbp-hot,comp.e0-active,comp.hbp-active
@@ -69,9 +69,9 @@ addf   hpg.capture-position                 servo-thread
 addf   bb_gpio.read                         servo-thread
 addf   gantry.y.read                        servo-thread
 addf   motion-command-handler               servo-thread
-addf   f2u.probe-sel                        servo-thread
+#addf   f2u.probe-sel                        servo-thread
 addf   mux-gen.00                           servo-thread
-addf   and2.probe                           servo-thread
+#addf   and2.probe                           servo-thread
 addf   motion-controller                    servo-thread
 # HBP
 addf   lowpass.hbp-temp                     servo-thread
@@ -1139,7 +1139,7 @@ net ve.filament-dia      <= motion.analog-out-io-44
 net ve.jog-velocity      <= motion.analog-out-io-45
 net ve.jog-distance      <= motion.analog-out-io-46
 
-net probe.enable         <= motion.digital-out-00
+#net probe.enable         <= motion.digital-out-00
 net ve.extruder-en       <= motion.digital-out-io-01
 net ve.jog-trigger       <= motion.digital-out-io-02
 
