@@ -397,24 +397,24 @@ setp hpg.stepgen.01.dirpin          [AXIS_1]DIRPIN_LEFT
 # ################
 
 # axis enable chain
-newsig emcmot.03.enable bit
-sets emcmot.03.enable FALSE
+newsig emcmot.02.enable bit
+sets emcmot.02.enable FALSE
 
-net emcmot.03.enable <= axis.3.amp-enable-out
-net emcmot.03.enable => hpg.stepgen.03.enable
+net emcmot.02.enable <= axis.2.amp-enable-out
+net emcmot.02.enable => hpg.stepgen.03.enable
 
 #setp gantry.y.search-vel            [AXIS_2]HOME_SEARCH_VEL
 
 # position command and feedback
-net emcmot.03.pos-cmd <= axis.3.motor-pos-cmd
-net emcmot.03.pos-cmd => hpg.stepgen.03.position-cmd
-#net motor.03.pos-cmd <= gantry.y.joint.00.pos-cmd
-#net motor.03.pos-cmd => hpg.stepgen.02.position-cmd
+net emcmot.02.pos-cmd <= axis.2.motor-pos-cmd
+net emcmot.02.pos-cmd => hpg.stepgen.03.position-cmd
+#net motor.02.pos-cmd <= gantry.y.joint.00.pos-cmd
+#net motor.02.pos-cmd => hpg.stepgen.02.position-cmd
 
 #net emcmot.03.pos-fb <= gantry.y.position-fb
 #net emcmot.03.pos-fb => axis.2.motor-pos-fb
-net motor.03.pos-fb <= hpg.stepgen.03.position-fb
-net motor.03.pos-fb => axis.3.motor-pos-fb
+net motor.02.pos-fb <= hpg.stepgen.03.position-fb
+net motor.02.pos-fb => axis.2.motor-pos-fb
 
 
 # timing parameters
