@@ -1,6 +1,6 @@
 # #######################################
 #
-# HAL file for BeagleBone + CRAMPS2 cape with 6 steppers
+# HAL file for BeagleBone + CRAMPS2 cape with 8 steppers
 # Designed for Machineface UI
 #
 # Derived from thecooltool UNIPRINT-3D-stepper config
@@ -26,6 +26,9 @@ loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=5 num_ai
 
 # Gantry component for Y Axis
 loadrt gantry_latching names=gantry.y personality=2
+
+# Gantry component for Z Axis
+loadrt gantry_latching names=gantry.z personality=4
 
 # load low-level drivers
 loadrt hal_bb_gpio output_pins=816,822,823,824,825,826,914,923,925 input_pins=807,808,809,810,817,911,913
@@ -68,6 +71,7 @@ loadrt reset names=reset.extruder-en1,reset.extruder-en2
 addf   hpg.capture-position                 servo-thread
 addf   bb_gpio.read                         servo-thread
 addf   gantry.y.read                        servo-thread
+addf   gantry.z.read                        servo-thread
 addf   motion-command-handler               servo-thread
 #addf   f2u.probe-sel                        servo-thread
 #addf   mux-gen.00                           servo-thread
@@ -151,6 +155,7 @@ addf mux4.ve                                servo-thread
 
 # Update functions
 addf   gantry.y.write                       servo-thread
+addf   gantry.z.write                       servo-thread
 addf   hpg.update                           servo-thread
 addf   bb_gpio.write                        servo-thread
 
@@ -257,6 +262,10 @@ ready  fdm-ve-params
 newcomp gantry-config timer=100
 newpin gantry-config gantry-config.offset-left  float io
 newpin gantry-config gantry-config.offset-right float io
+newpin gantry-config gantry-config.offset-left-back  float io
+newpin gantry-config gantry-config.offset-right-back float io
+newpin gantry-config gantry-config.offset-left-front  float io
+newpin gantry-config gantry-config.offset-right-front float io
 ready gantry-config
     
 newcomp fdm-e0-pid timer=100
@@ -393,29 +402,28 @@ setp hpg.stepgen.02.dirpin          [AXIS_1]DIRPIN_LEFT
 
 
 # ################
-# Z [2] Axis
+# Z [2] Axis Right - Back- Gantry
 # ################
 
 # axis enable chain
 newsig emcmot.02.enable bit
 sets emcmot.02.enable FALSE
 
-net emcmot.02.enable <= axis.2.amp-enable-out
+net emcmot.02.enable <= axis.2.amp-enable-out 
 net emcmot.02.enable => hpg.stepgen.03.enable
 
-#setp gantry.y.search-vel            [AXIS_2]HOME_SEARCH_VEL
+setp gantry.z.search-vel            [AXIS_2]HOME_SEARCH_VEL
 
 # position command and feedback
 net emcmot.02.pos-cmd <= axis.2.motor-pos-cmd
-net emcmot.02.pos-cmd => hpg.stepgen.03.position-cmd
-#net motor.02.pos-cmd <= gantry.y.joint.01.pos-cmd
-#net motor.02.pos-cmd => hpg.stepgen.03.position-cmd
+net emcmot.02.pos-cmd => gantry.z.position-cmd
+net motor.03.pos-cmd <= gantry.z.joint.00.pos-cmd
+net motor.03.pos-cmd => hpg.stepgen.03.position-cmd
 
-#net emcmot.02.pos-fb <= gantry.y.position-fb
-#net emcmot.02.pos-fb => axis.2.motor-pos-fb
+net emcmot.02.pos-fb <= gantry.z.position-fb
+net emcmot.02.pos-fb => axis.2.motor-pos-fb
 net motor.03.pos-fb <= hpg.stepgen.03.position-fb
-net motor.03.pos-fb => axis.2.motor-pos-fb
-
+net motor.03.pos-fb => gantry.z.joint.00.pos-fb
 
 # timing parameters
 setp hpg.stepgen.03.dirsetup        [AXIS_2]DIRSETUP
@@ -430,8 +438,98 @@ setp hpg.stepgen.03.maxvel          [AXIS_2]STEPGEN_MAX_VEL
 setp hpg.stepgen.03.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
 
 #setp hpg.stepgen.03.step_type       0
-setp hpg.stepgen.03.steppin         [AXIS_2]STEPPIN
-setp hpg.stepgen.03.dirpin          [AXIS_2]DIRPIN
+setp hpg.stepgen.03.steppin         [AXIS_2]STEPPIN_RIGHT_BACK
+setp hpg.stepgen.03.dirpin          [AXIS_2]DIRPIN_RIGHT_BACK
+
+
+# ################
+# Z [3] Axis Left  - Back- Gantry
+# ################
+
+# axis enable chain
+
+net emcmot.02.enable => hpg.stepgen.04.enable
+
+# position command and feedback
+net motor.04.pos-cmd <= gantry.z.joint.01.pos-cmd
+net motor.04.pos-cmd => hpg.stepgen.04.position-cmd
+
+net motor.03.pos-fb <= hpg.stepgen.03.position-fb
+net motor.03.pos-fb => gantry.z.joint.01.pos-fb
+
+# timing parameters
+setp hpg.stepgen.04.dirsetup        [AXIS_2]DIRSETUP
+setp hpg.stepgen.04.dirhold         [AXIS_2]DIRHOLD
+
+setp hpg.stepgen.04.steplen         [AXIS_2]STEPLEN
+setp hpg.stepgen.04.stepspace       [AXIS_2]STEPSPACE
+
+setp hpg.stepgen.04.position-scale  [AXIS_2]SCALE
+
+setp hpg.stepgen.04.maxvel          [AXIS_2]STEPGEN_MAX_VEL
+setp hpg.stepgen.04.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
+
+setp hpg.stepgen.04.steppin         [AXIS_2]STEPPIN_LEFT_BACK
+setp hpg.stepgen.04.dirpin          [AXIS_2]DIRPIN_LEFT_BACK
+
+# ################
+# Z [2] Axis Right - Front - Gantry
+# ################
+
+# axis enable chain
+net emcmot.02.enable => hpg.stepgen.05.enable
+
+# position command and feedback
+net motor.05.pos-cmd <= gantry.z.joint.02.pos-cmd
+net motor.05.pos-cmd => hpg.stepgen.05.position-cmd
+
+net motor.05.pos-fb <= hpg.stepgen.05.position-fb
+net motor.05.pos-fb => gantry.z.joint.02.pos-fb
+
+# timing parameters
+setp hpg.stepgen.05.dirsetup        [AXIS_2]DIRSETUP
+setp hpg.stepgen.05.dirhold         [AXIS_2]DIRHOLD
+
+setp hpg.stepgen.05.steplen         [AXIS_2]STEPLEN
+setp hpg.stepgen.05.stepspace       [AXIS_2]STEPSPACE
+
+setp hpg.stepgen.05.position-scale  [AXIS_2]SCALE
+
+setp hpg.stepgen.05.maxvel          [AXIS_2]STEPGEN_MAX_VEL
+setp hpg.stepgen.05.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
+
+setp hpg.stepgen.05.steppin         [AXIS_2]STEPPIN_RIGHT_FRONT
+setp hpg.stepgen.05.dirpin          [AXIS_2]DIRPIN_RIGHT_FRONT
+
+# ################
+# Z [3] Axis Left - Front - Gantry
+# ################
+
+# axis enable chain
+
+net emcmot.02.enable => hpg.stepgen.06.enable
+
+# position command and feedback
+net motor.06.pos-cmd <= gantry.z.joint.03.pos-cmd
+net motor.06.pos-cmd => hpg.stepgen.06.position-cmd
+
+net motor.06.pos-fb <= hpg.stepgen.06.position-fb
+net motor.06.pos-fb => gantry.z.joint.03.pos-fb
+
+# timing parameters
+setp hpg.stepgen.06.dirsetup        [AXIS_2]DIRSETUP
+setp hpg.stepgen.06.dirhold         [AXIS_2]DIRHOLD
+
+setp hpg.stepgen.06.steplen         [AXIS_2]STEPLEN
+setp hpg.stepgen.06.stepspace       [AXIS_2]STEPSPACE
+
+setp hpg.stepgen.06.position-scale  [AXIS_2]SCALE
+
+setp hpg.stepgen.06.maxvel          [AXIS_2]STEPGEN_MAX_VEL
+setp hpg.stepgen.06.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
+
+setp hpg.stepgen.06.steppin         [AXIS_2]STEPPIN_LEFT_FRONT
+setp hpg.stepgen.06.dirpin          [AXIS_2]DIRPIN_LEFT_FRONT
 
 
 # ################
@@ -578,7 +676,7 @@ sets ve.extrude-scale 1.0
 # axis enable chain
 newsig emcmot.03.enable bit
 #net emcmot.03.enable <= axis.3.amp-enable-out
-net emcmot.03.enable => hpg.stepgen.04.enable
+net emcmot.03.enable => hpg.stepgen.07.enable
 sets emcmot.03.enable TRUE
 
 # position command and feedback
@@ -589,22 +687,22 @@ sets emcmot.03.enable TRUE
 #net motor.04.pos-fb => axis.3.motor-pos-fb
 
 # timing parameters
-setp hpg.stepgen.04.control-type    1
+setp hpg.stepgen.07.control-type    1
 
-setp hpg.stepgen.04.dirsetup        [AXIS_3]DIRSETUP
-setp hpg.stepgen.04.dirhold         [AXIS_3]DIRHOLD
+setp hpg.stepgen.07.dirsetup        [AXIS_3]DIRSETUP
+setp hpg.stepgen.07.dirhold         [AXIS_3]DIRHOLD
 
-setp hpg.stepgen.04.steplen         [AXIS_3]STEPLEN
-setp hpg.stepgen.04.stepspace       [AXIS_3]STEPSPACE
+setp hpg.stepgen.07.steplen         [AXIS_3]STEPLEN
+setp hpg.stepgen.07.stepspace       [AXIS_3]STEPSPACE
 
-setp hpg.stepgen.04.position-scale  [AXIS_3]SCALE
+setp hpg.stepgen.07.position-scale  [AXIS_3]SCALE
 
-setp hpg.stepgen.04.maxvel          [AXIS_3]STEPGEN_MAX_VEL
-setp hpg.stepgen.04.maxaccel        [AXIS_3]STEPGEN_MAX_ACC
+setp hpg.stepgen.07.maxvel          [AXIS_3]STEPGEN_MAX_VEL
+setp hpg.stepgen.07.maxaccel        [AXIS_3]STEPGEN_MAX_ACC
 
-#setp hpg.stepgen.04.step_type       0
-setp hpg.stepgen.04.steppin         [AXIS_3]STEPPIN
-setp hpg.stepgen.04.dirpin          [AXIS_3]DIRPIN
+#setp hpg.stepgen.07.step_type       0
+setp hpg.stepgen.07.steppin         [AXIS_3]STEPPIN
+setp hpg.stepgen.07.dirpin          [AXIS_3]DIRPIN
 
 
 # ##################################################
@@ -640,7 +738,7 @@ net emcmot.00.enable => bb_gpio.p9.out-25
 # ################
 # Limit Switches
 # ################
-newsig limit-x-home   bit
+newsig limit-x-zlb-home   bit
 newsig limit-z-home   bit
 newsig limit-yl-home  bit
 newsig limit-yr-home  bit
@@ -656,16 +754,18 @@ newsig home-y         bit
 newsig home-offset-yr float
 newsig home-offset-yl float
 
-#net limit-x-min <= bb_gpio.p8.in-08
-net limit-x-home <= bb_gpio.p8.in-08
-#net limit-x-max <= bb_gpio.p8.in-07
+#x-min
+net limit-x-zlb-home <= bb_gpio.p8.in-08
+#x-max
+net limit-zrb-home <= bb_gpio.p8.in-07
 #net limit-y-min <= bb_gpio.p8.in-10
 #net limit-y-max <= bb_gpio.p8.in-09
 net limit-yr-home <= bb_gpio.p8.in-10
 net limit-yl-home <= bb_gpio.p8.in-09
-#net limit-z-min <= bb_gpio.p9.in-13
-net limit-z-home <= bb_gpio.p9.in-13
-#net limit-z-max <= bb_gpio.p9.in-11
+#z-min
+#net limit-zlf-home <= bb_gpio.p9.in-13
+#z-max
+net limit-zrf-home <= bb_gpio.p9.in-11
 
 # Adjust as needed for your switch polarity
 setp bb_gpio.p8.in-08.invert 1
@@ -676,10 +776,19 @@ setp bb_gpio.p9.in-11.invert 1
 setp bb_gpio.p9.in-13.invert 1
 
 net home-y      <= gantry.y.home
+net home-z      <= gantry.z.home
+
+net home-offset-zrb => gantry.z.joint.00.home-offset
+net home-offset-zlb => gantry.z.joint.01.home-offset
+net home-offset-zrf => gantry.z.joint.02.home-offset
+net home-offset-zlf => gantry.z.joint.03.home-offset
+
+net z-homing <= axis.2.homing
+net z-homing => gantry.z.homing
 
 # Uncomment if you actually have limit switches setup
 # You probably want to setup homing in the INI file, as well
-net limit-x-home => axis.0.home-sw-in
+net limit-x-zlb-home => axis.0.home-sw-in
 #net limit-x-min => axis.0.neg-lim-sw-in
 #net limit-x-max => axis.0.pos-lim-sw-in
 #net limit-y-min => axis.1.neg-lim-sw-in
@@ -690,10 +799,11 @@ net limit-yr-home => gantry.y.joint.00.home
 net limit-yl-home => gantry.y.joint.01.home
 net home-y        => axis.1.home-sw-in
 #net limit-z-min => axis.2.home-sw-in
-#net limit-z-min => axis.2.neg-lim-sw-ingggg
+#net limit-z-min => axis.2.neg-lim-sw-in
 #net limit-z-max => axis.2.pos-lim-sw-in
-net homing <= axis.2.homing
-net homing => gantry.y.homing
+
+net y-homing <= axis.1.homing
+net y-homing => gantry.y.homing
 
 net home-offset-yr => gantry.y.joint.00.home-offset
 net home-offset-yl => gantry.y.joint.01.home-offset
@@ -714,7 +824,7 @@ net home-offset-yl => gantry.y.joint.01.home-offset
 #net probe.sel    => mux-gen.00.sel-int
 #net probe.muxed  <= mux-gen.00.out-bit
 #net probe.signal => mux-gen.00.in-bit-00
-#net limit-x-home => mux-gen.00.in-bit-01
+#net limit-x-zlb-home => mux-gen.00.in-bit-01
 #net limit-z-home => mux-gen.00.in-bit-02
 #net home-y       => mux-gen.00.in-bit-03
 
@@ -1237,6 +1347,11 @@ net ve.extrude-accel-adj-gain   <=> fdm-ve-params.accel-adj-gain
 net home-offset-yr      <=> gantry-config.offset-right
 net home-offset-yl      <=> gantry-config.offset-left
 
+net home-offset-zrb      <=> gantry-config.offset-right-back
+net home-offset-zlb      <=> gantry-config.offset-left-back
+net home-offset-zrf      <=> gantry-config.offset-right-front
+net home-offset-zlf      <=> gantry-config.offset-left-front
+
 # monitor the estop error sources
 newg error-sources 100
 newm error-sources estop-user
@@ -1258,6 +1373,10 @@ newm error-sources hbp.therm-ok
 #net l0.w               <=> storage.l0.w
 net home-offset-yr     <=> storage.gantry.home-offset-yr
 net home-offset-yl     <=> storage.gantry.home-offset-yl
+net home-offset-zrb     <=> storage.gantry.home-offset-zrb
+net home-offset-zlb     <=> storage.gantry.home-offset-zlb
+net home-offset-zrf     <=> storage.gantry.home-offset-zrf
+net home-offset-zlf     <=> storage.gantry.home-offset-zlf
 net ve.retract-vel     <=> storage.retract.velocity
 net ve.retract-len     <=> storage.retract.length
 net ve.filament-dia    <=> storage.filament.diameter
