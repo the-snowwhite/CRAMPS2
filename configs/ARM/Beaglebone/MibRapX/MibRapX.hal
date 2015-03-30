@@ -25,13 +25,13 @@ loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=5 num_ai
 #loadrt threads name1=run-thread period1=50170000
 
 # Gantry component for Y Axis
-loadrt gantry_latching names=gantry.y personality=2
+#loadrt gantry_latching names=gantry.y personality=2
 
-# Gantry component for Z Axis
-loadrt gantry_latching names=gantry.z personality=4
+# Gantry component for Y and Z Axis
+loadrt gantry_latching names=gantry.y,gantry.z personality=2,4
 
 # load low-level drivers
-loadrt hal_bb_gpio output_pins=816,822,823,824,825,826,914,923,925 input_pins=807,808,809,810,817,911,913
+loadrt hal_bb_gpio output_pins=826,914,923,925 input_pins=807,808,809,810,817,911,913
 loadrt [PRUCONF](DRIVER) prucode=$(HAL_RTMOD_DIR)/[PRUCONF](PRUBIN) [PRUCONF](CONFIG) halname=hpg pru_period=5000
 
 # Python user-mode HAL module to read ADC value and generate a thermostat output for PWM
@@ -402,7 +402,7 @@ setp hpg.stepgen.02.dirpin          [AXIS_1]DIRPIN_LEFT
 
 
 # ################
-# Z [2] Axis Right - Back- Gantry
+# Z [2] Axis Left - Back- Gantry
 # ################
 
 # axis enable chain
@@ -438,12 +438,12 @@ setp hpg.stepgen.03.maxvel          [AXIS_2]STEPGEN_MAX_VEL
 setp hpg.stepgen.03.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
 
 #setp hpg.stepgen.03.step_type       0
-setp hpg.stepgen.03.steppin         [AXIS_2]STEPPIN_RIGHT_BACK
-setp hpg.stepgen.03.dirpin          [AXIS_2]DIRPIN_RIGHT_BACK
+setp hpg.stepgen.03.steppin         [AXIS_2]STEPPIN_LEFT_BACK
+setp hpg.stepgen.03.dirpin          [AXIS_2]DIRPIN_LEFT_BACK
 
 
 # ################
-# Z [3] Axis Left  - Back- Gantry
+# Z [3] Axis Right - Back- Gantry
 # ################
 
 # axis enable chain
@@ -469,11 +469,11 @@ setp hpg.stepgen.04.position-scale  [AXIS_2]SCALE
 setp hpg.stepgen.04.maxvel          [AXIS_2]STEPGEN_MAX_VEL
 setp hpg.stepgen.04.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
 
-setp hpg.stepgen.04.steppin         [AXIS_2]STEPPIN_LEFT_BACK
-setp hpg.stepgen.04.dirpin          [AXIS_2]DIRPIN_LEFT_BACK
+setp hpg.stepgen.04.steppin         [AXIS_2]STEPPIN_RIGHT_BACK
+setp hpg.stepgen.04.dirpin          [AXIS_2]DIRPIN_RIGHT_BACK
 
 # ################
-# Z [2] Axis Right - Front - Gantry
+# Z [2] Axis Left - Front - Gantry
 # ################
 
 # axis enable chain
@@ -498,11 +498,11 @@ setp hpg.stepgen.05.position-scale  [AXIS_2]SCALE
 setp hpg.stepgen.05.maxvel          [AXIS_2]STEPGEN_MAX_VEL
 setp hpg.stepgen.05.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
 
-setp hpg.stepgen.05.steppin         [AXIS_2]STEPPIN_RIGHT_FRONT
-setp hpg.stepgen.05.dirpin          [AXIS_2]DIRPIN_RIGHT_FRONT
+setp hpg.stepgen.05.steppin         [AXIS_2]STEPPIN_LEFT_FRONT
+setp hpg.stepgen.05.dirpin          [AXIS_2]DIRPIN_LEFT_FRONT
 
 # ################
-# Z [3] Axis Left - Front - Gantry
+# Z [3] Axis Right - Front - Gantry
 # ################
 
 # axis enable chain
@@ -528,8 +528,8 @@ setp hpg.stepgen.06.position-scale  [AXIS_2]SCALE
 setp hpg.stepgen.06.maxvel          [AXIS_2]STEPGEN_MAX_VEL
 setp hpg.stepgen.06.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
 
-setp hpg.stepgen.06.steppin         [AXIS_2]STEPPIN_LEFT_FRONT
-setp hpg.stepgen.06.dirpin          [AXIS_2]DIRPIN_LEFT_FRONT
+setp hpg.stepgen.06.steppin         [AXIS_2]STEPPIN_RIGHT_FRONT
+setp hpg.stepgen.06.dirpin          [AXIS_2]DIRPIN_RIGHT_FRONT
 
 
 # ################
@@ -754,16 +754,17 @@ newsig home-y         bit
 newsig home-offset-yr float
 newsig home-offset-yl float
 
+net limit-yr-home <= bb_gpio.p8.in-10
+net limit-yl-home <= bb_gpio.p8.in-09
+
 #x-min
 net limit-x-zlb-home <= bb_gpio.p8.in-08
 #x-max
 net limit-zrb-home <= bb_gpio.p8.in-07
 #net limit-y-min <= bb_gpio.p8.in-10
 #net limit-y-max <= bb_gpio.p8.in-09
-net limit-yr-home <= bb_gpio.p8.in-10
-net limit-yl-home <= bb_gpio.p8.in-09
 #z-min
-#net limit-zlf-home <= bb_gpio.p9.in-13
+net limit-zlf-home <= bb_gpio.p9.in-13
 #z-max
 net limit-zrf-home <= bb_gpio.p9.in-11
 
@@ -1382,3 +1383,4 @@ net ve.retract-len     <=> storage.retract.length
 net ve.filament-dia    <=> storage.filament.diameter
 net ve.jog-velocity    <=> storage.extruder.jog-velocity
 setp storage.read-trigger 1 # trigger read
+

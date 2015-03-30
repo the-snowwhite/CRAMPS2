@@ -11,7 +11,7 @@ P8_12	low	# X Dir
 P8_13	low	# X Step
 P8_14	low	# Y Dir
 P8_15	low	# Y Step
-P8_16	high	# eMMC Enable
+P8_16	low # U Dir
 P8_17	in	# ESTOP
 P8_18	low	# Z Dir
 P8_19	low	# Z Step
@@ -42,13 +42,13 @@ P9_24	low	# E2 Step
 P9_25	low	# LED
 P9_26	low	# E2 Dir
 P9_27	low	# FET 3 : E2
-P9_28	low	# SPI CS0
-P9_29	low	# SPI MISO
-P9_30	low	# SPI MOSI
-P9_31	low	# SPI SCLK
+P9_28	low	# V Dir
+P9_29	low	# W Step
+P9_30	low	# W Dir
+P9_31	low	# V Step
 
 P9_41	low	# FET 5
 P9_91	in	# Reserved, connected to P9.41
 
-P9_42	low	# SPI CS1
+P9_42	low	# U Step
 P9_92	in	# Reserved, connected to P9.42
