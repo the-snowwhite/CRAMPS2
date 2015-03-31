@@ -49,7 +49,8 @@ loadrt not names=not.e0-temp-range,not.hbp-temp-range,not.e0-error,not.hbp-error
 loadrt wcomp names=wcomp.e0-temp-range,wcomp.hbp-temp-range,wcomp.e0-temp-limit,wcomp.hbp-temp-limit
 loadrt lowpass names=lowpass.e0-temp,lowpass.hbp-temp
 loadrt sum2 names=sum2.e0-temp-range-neg,sum2.e0-temp-range-pos,sum2.hbp-temp-range-neg,sum2.hbp-temp-range-pos,sum2.extrude-rate-adj
-#loadrt and2 names=and2.probe
+#loadrt and2 names=and2.probe,and2.x-lim,and2.z-lim
+loadrt and2 names=and2.x-lim,and2.z-lim
 loadrt mux2 names=mux2.exp0-pwm,mux2.ve-base-vel,mux2.jog-velocity-signed
 loadrt logic names=estopchain,and3.e0-no-error,and3.hbp-no-error personality=0x106,0x103,0x103 # and 8 and 3 inputs
 loadrt comp names=comp.exp0-temp,comp.hbp-hot,comp.e0-active,comp.hbp-active
@@ -162,6 +163,9 @@ addf   bb_gpio.write                        servo-thread
 
 #addf   charge-pump                         run-thread
 
+# Lmitswitch-selector
+addf and2.x-lim                        servo-thread
+addf and2.z-lim                        servo-thread
 
 # user components
 #newsig gpio-ok bit
@@ -267,7 +271,7 @@ newpin gantry-config gantry-config.offset-right-back float io
 newpin gantry-config gantry-config.offset-left-front  float io
 newpin gantry-config gantry-config.offset-right-front float io
 ready gantry-config
-    
+        
 newcomp fdm-e0-pid timer=100
 newpin fdm-e0-pid fdm-e0-pid.Pgain              float io
 newpin fdm-e0-pid fdm-e0-pid.Igain              float io
@@ -753,6 +757,10 @@ newsig home-x         bit
 newsig home-y         bit
 newsig home-offset-yr float
 newsig home-offset-yl float
+newsig home-offset-zrb float
+newsig home-offset-zlb float
+newsig home-offset-zrf float
+newsig home-offset-zlf float
 
 net limit-yr-home <= bb_gpio.p8.in-10
 net limit-yl-home <= bb_gpio.p8.in-09
@@ -779,35 +787,47 @@ setp bb_gpio.p9.in-13.invert 1
 net home-y      <= gantry.y.home
 net home-z      <= gantry.z.home
 
-net home-offset-zrb => gantry.z.joint.00.home-offset
-net home-offset-zlb => gantry.z.joint.01.home-offset
-net home-offset-zrf => gantry.z.joint.02.home-offset
-net home-offset-zlf => gantry.z.joint.03.home-offset
-
-net z-homing <= axis.2.homing
-net z-homing => gantry.z.homing
+net limit-x-zlb-home => and2.x-lim.in0 and2.z-lim.in0
 
 # Uncomment if you actually have limit switches setup
 # You probably want to setup homing in the INI file, as well
-net limit-x-zlb-home => axis.0.home-sw-in
+net x-lim-and <= and2.x-lim.out
+net x-lim-and => axis.0.home-sw-in
 #net limit-x-min => axis.0.neg-lim-sw-in
 #net limit-x-max => axis.0.pos-lim-sw-in
 #net limit-y-min => axis.1.neg-lim-sw-in
 #net limit-y-max => axis.1.pos-lim-sw-in
 #net limit-z-min => gantry.y.joint.00.home
-net limit-z-home => axis.2.home-sw-in
+
+net home-y        => axis.1.home-sw-in
+net home-z => axis.2.home-sw-in
 net limit-yr-home => gantry.y.joint.00.home
 net limit-yl-home => gantry.y.joint.01.home
-net home-y        => axis.1.home-sw-in
-#net limit-z-min => axis.2.home-sw-in
-#net limit-z-min => axis.2.neg-lim-sw-in
-#net limit-z-max => axis.2.pos-lim-sw-in
+
+net z-lim-and <= and2.z-lim.out
+
+net z-lim-and => gantry.z.joint.00.home
+net limit-zrb-home => gantry.z.joint.01.home
+net limit-zlf-home => gantry.z.joint.02.home
+net limit-zrf-home => gantry.z.joint.03.home
+
+net x-homing <= axis.0.homing
+net x-homing => and2.x-lim.in1
 
 net y-homing <= axis.1.homing
 net y-homing => gantry.y.homing
 
+net z-homing <= axis.2.homing
+#net z-homing => gantry.z.homing and2.z-lim.in1
+net z-homing => and2.z-lim.in1
+
 net home-offset-yr => gantry.y.joint.00.home-offset
 net home-offset-yl => gantry.y.joint.01.home-offset
+
+net home-offset-zrb => gantry.z.joint.00.home-offset
+net home-offset-zlb => gantry.z.joint.01.home-offset
+net home-offset-zrf => gantry.z.joint.02.home-offset
+net home-offset-zlf => gantry.z.joint.03.home-offset
 
 # ################
 # Probe
@@ -1347,7 +1367,6 @@ net ve.extrude-accel-adj-gain   <=> fdm-ve-params.accel-adj-gain
 
 net home-offset-yr      <=> gantry-config.offset-right
 net home-offset-yl      <=> gantry-config.offset-left
-
 net home-offset-zrb      <=> gantry-config.offset-right-back
 net home-offset-zlb      <=> gantry-config.offset-left-back
 net home-offset-zrf      <=> gantry-config.offset-right-front
