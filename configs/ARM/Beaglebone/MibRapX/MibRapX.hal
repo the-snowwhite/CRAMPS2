@@ -742,7 +742,6 @@ newsig limit-x-zlb-home bit
 newsig limit-z-home     bit
 newsig limit-yl-home    bit
 newsig limit-yr-home    bit
-newsig limit-x-zlb-home bit
 newsig limit-zrb-home   bit
 newsig limit-zlf-home   bit
 newsig limit-zrf-home   bit
