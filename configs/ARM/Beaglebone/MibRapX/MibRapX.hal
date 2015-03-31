@@ -374,10 +374,6 @@ setp hpg.stepgen.01.dirpin          [AXIS_1]DIRPIN_RIGHT
 # ################
 
 # axis enable chain
-#newsig emcmot.01.enable bit
-#sets emcmot.01.enable FALSE
-
-#net emcmot.01.enable <= axis.1.amp-enable-out 
 net emcmot.01.enable => hpg.stepgen.02.enable
 
 # position command and feedback
@@ -458,8 +454,8 @@ net emcmot.02.enable => hpg.stepgen.04.enable
 net motor.04.pos-cmd <= gantry.z.joint.01.pos-cmd
 net motor.04.pos-cmd => hpg.stepgen.04.position-cmd
 
-net motor.03.pos-fb <= hpg.stepgen.03.position-fb
-net motor.03.pos-fb => gantry.z.joint.01.pos-fb
+net motor.04.pos-fb <= hpg.stepgen.04.position-fb
+net motor.04.pos-fb => gantry.z.joint.01.pos-fb
 
 # timing parameters
 setp hpg.stepgen.04.dirsetup        [AXIS_2]DIRSETUP
@@ -742,25 +738,23 @@ net emcmot.00.enable => bb_gpio.p9.out-25
 # ################
 # Limit Switches
 # ################
-newsig limit-x-zlb-home   bit
-newsig limit-z-home   bit
-newsig limit-yl-home  bit
-newsig limit-yr-home  bit
-newsig limit-x-min    bit
-newsig limit-x-max    bit
-newsig limit-y-min    bit
-newsig limit-y-max    bit
-newsig limit-z-min    bit
-newsig limit-z-max    bit
-newsig home-z         bit
-newsig home-x         bit
-newsig home-y         bit
-newsig home-offset-yr float
-newsig home-offset-yl float
-newsig home-offset-zrb float
-newsig home-offset-zlb float
-newsig home-offset-zrf float
-newsig home-offset-zlf float
+newsig limit-x-zlb-home bit
+newsig limit-z-home     bit
+newsig limit-yl-home    bit
+newsig limit-yr-home    bit
+newsig limit-x-zlb-home bit
+newsig limit-zrb-home   bit
+newsig limit-zlf-home   bit
+newsig limit-zrf-home   bit
+#newsig home-x           bit
+newsig home-y           bit
+newsig home-z           bit
+newsig home-offset-yr   float
+newsig home-offset-yl   float
+newsig home-offset-zrb  float
+newsig home-offset-zlb  float
+newsig home-offset-zrf  float
+newsig home-offset-zlf  float
 
 net limit-yr-home <= bb_gpio.p8.in-10
 net limit-yl-home <= bb_gpio.p8.in-09
@@ -769,15 +763,13 @@ net limit-yl-home <= bb_gpio.p8.in-09
 net limit-x-zlb-home <= bb_gpio.p8.in-08
 #x-max
 net limit-zrb-home <= bb_gpio.p8.in-07
-#net limit-y-min <= bb_gpio.p8.in-10
-#net limit-y-max <= bb_gpio.p8.in-09
 #z-min
 net limit-zlf-home <= bb_gpio.p9.in-13
 #z-max
 net limit-zrf-home <= bb_gpio.p9.in-11
 
 # Adjust as needed for your switch polarity
-setp bb_gpio.p8.in-08.invert 1
+setp bb_gpio.p8.in-08.invert 1home-offset-zlf
 setp bb_gpio.p8.in-07.invert 1
 setp bb_gpio.p8.in-10.invert 1
 setp bb_gpio.p8.in-09.invert 1
@@ -793,11 +785,6 @@ net limit-x-zlb-home => and2.x-lim.in0 and2.z-lim.in0
 # You probably want to setup homing in the INI file, as well
 net x-lim-and <= and2.x-lim.out
 net x-lim-and => axis.0.home-sw-in
-#net limit-x-min => axis.0.neg-lim-sw-in
-#net limit-x-max => axis.0.pos-lim-sw-in
-#net limit-y-min => axis.1.neg-lim-sw-in
-#net limit-y-max => axis.1.pos-lim-sw-in
-#net limit-z-min => gantry.y.joint.00.home
 
 net home-y        => axis.1.home-sw-in
 net home-z        => axis.2.home-sw-in
