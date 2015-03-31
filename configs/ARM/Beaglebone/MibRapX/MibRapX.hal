@@ -768,7 +768,7 @@ net limit-zlf-home <= bb_gpio.p9.in-13
 net limit-zrf-home <= bb_gpio.p9.in-11
 
 # Adjust as needed for your switch polarity
-setp bb_gpio.p8.in-08.invert 1home-offset-zlf
+setp bb_gpio.p8.in-08.invert 1
 setp bb_gpio.p8.in-07.invert 1
 setp bb_gpio.p8.in-10.invert 1
 setp bb_gpio.p8.in-09.invert 1
