@@ -780,6 +780,9 @@ net home-z      <= gantry.z.home
 
 net limit-x-zlb-home => and2.x-lim.in0 and2.z-lim.in0
 
+net x-homing <= axis.0.homing
+net x-homing => and2.x-lim.in1
+
 # Uncomment if you actually have limit switches setup
 # You probably want to setup homing in the INI file, as well
 net x-lim-and <= and2.x-lim.out
@@ -797,9 +800,6 @@ net limit-zrb-home => gantry.z.joint.01.home
 net limit-zlf-home => gantry.z.joint.02.home
 net limit-zrf-home => gantry.z.joint.03.home
 
-net x-homing <= axis.0.homing
-net x-homing => and2.x-lim.in1
-
 net y-homing <= axis.1.homing
 net y-homing => gantry.y.homing
 
@@ -810,10 +810,10 @@ net z-homing => gantry.z.homing and2.z-lim.in1
 net home-offset-yr => gantry.y.joint.00.home-offset
 net home-offset-yl => gantry.y.joint.01.home-offset
 
-net home-offset-zrb => gantry.z.joint.00.home-offset
-net home-offset-zlb => gantry.z.joint.01.home-offset
-net home-offset-zrf => gantry.z.joint.02.home-offset
-net home-offset-zlf => gantry.z.joint.03.home-offset
+net home-offset-zlb => gantry.z.joint.00.home-offset
+net home-offset-zrb => gantry.z.joint.01.home-offset
+net home-offset-zlf => gantry.z.joint.02.home-offset
+net home-offset-zrf => gantry.z.joint.03.home-offset
 
 # ################
 # Probe
