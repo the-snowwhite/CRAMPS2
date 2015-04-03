@@ -1141,7 +1141,6 @@ net extruder.sel <= iocontrol.0.tool-prep-number
 # F0
 # ---------------------------
 newsig f0.set           float
-newsig f0.pwm           float
 # ---------------------------
 setp scale.f0.gain 0.00392156862745
 net f0.set => scale.f0.in
