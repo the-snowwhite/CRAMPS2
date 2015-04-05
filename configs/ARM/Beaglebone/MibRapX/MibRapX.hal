@@ -666,7 +666,7 @@ setp oneshot.retract.retriggerable 1
 #by setting the width, the automatic retract/precharge can be disabled
 net ve.retract-time => oneshot.retract.width
 
-net ve.extrude-vel => hpg.stepgen.04.velocity-cmd
+net ve.extrude-vel => hpg.stepgen.07.velocity-cmd
 sets ve.retract-len [EXTRUDER_0]RETRACT_LEN
 sets ve.retract-vel [EXTRUDER_0]RETRACT_VEL
 sets ve.filament-dia [EXTRUDER_0]FILAMENT_DIA
@@ -675,16 +675,8 @@ sets ve.extrude-scale 1.0
 
 # axis enable chain
 newsig emcmot.03.enable bit
-#net emcmot.03.enable <= axis.3.amp-enable-out
 net emcmot.03.enable => hpg.stepgen.07.enable
 sets emcmot.03.enable TRUE
-
-# position command and feedback
-#net emcmot.03.pos-cmd <= axis.3.motor-pos-cmd
-#net emcmot.03.pos-cmd => hpg.stepgen.04.position-cmd
-
-#net motor.04.pos-fb <= hpg.stepgen.04.position-fb
-#net motor.04.pos-fb => axis.3.motor-pos-fb
 
 # timing parameters
 setp hpg.stepgen.07.control-type    1
