@@ -10,6 +10,7 @@ from machinekit import launcher
 
 launcher.register_exit_handler()
 #launcher.set_debug_level(5)
+launcher.set_machinekit_ini('machinekit.ini')
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 parser = argparse.ArgumentParser(description='This is the MibRap-X run script '
