@@ -10,7 +10,7 @@ from machinekit import launcher
 from machinekit import config
 
 launcher.register_exit_handler()
-#launcher.set_debug_level(5)
+launcher.set_debug_level(5)
 #launcher.set_machinekit_ini('machinekit.ini')
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 c = config.Config()
