@@ -8,7 +8,7 @@
 # ########################################
 
 # start haltalk server
-loadusr -W haltalk
+#loadusr -W haltalk
 
 # ###################################
 # Core EMC/HAL Loads
@@ -83,7 +83,7 @@ addf   motion-command-handler               servo-thread
 addf   motion-controller                    servo-thread
 # HBP
 addf   lowpass.hbp-temp                     servo-thread
-addf   pid.hbp-temp.do-pid-calcs            servo-thread
+addf   pid.hbp-temp                         servo-thread
 addf   sum2.hbp-temp-range-neg              servo-thread
 addf   sum2.hbp-temp-range-pos              servo-thread
 addf   wcomp.hbp-temp-range                 servo-thread
@@ -96,7 +96,7 @@ addf   comp.hbp-active                      servo-thread
 # E0
 addf   scale.e0-fan-comp                    servo-thread
 addf   lowpass.e0-temp                      servo-thread
-addf   pid.e0-temp.do-pid-calcs             servo-thread
+addf   pid.e0-temp                          servo-thread
 addf   limit1.e0-heater                     servo-thread
 addf   sum2.e0-temp-range-neg               servo-thread
 addf   sum2.e0-temp-range-pos               servo-thread
@@ -1384,3 +1384,6 @@ net ve.filament-dia    <=> storage.filament.diameter
 net ve.jog-velocity    <=> storage.extruder.jog-velocity
 setp storage.read-trigger 1 # trigger read
 
+# start haltalk server after everything is initialized 
+# else binding the remote components on the UI might fail
+loadusr -W haltalk
