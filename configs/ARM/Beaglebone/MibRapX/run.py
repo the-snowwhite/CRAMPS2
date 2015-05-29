@@ -7,11 +7,14 @@ import importlib
 import argparse
 from time import *
 from machinekit import launcher
+from machinekit import config
 
 launcher.register_exit_handler()
 #launcher.set_debug_level(5)
 launcher.set_machinekit_ini('machinekit.ini')
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
+c = config.Config()
+os.environ["MACHINEKIT_INI"] = c.MACHINEKIT_INI
 
 parser = argparse.ArgumentParser(description='This is the MibRap-X run script '
                                  'it demonstrates how a run script could look like '
