@@ -40,11 +40,8 @@ loadrt [PRUCONF](DRIVER) prucode=$(HAL_RTMOD_DIR)/[PRUCONF](PRUBIN) [PRUCONF](CO
 loadusr -Wn Therm hal_temp_bbb -n Therm -c 04:[HBP]THERMISTOR,05:[EXTRUDER_0]THERMISTOR -b [CAPE]BOARD
 
 # other components
-#newinst pid pid.hbp-temp
-#newinst pid pid.e0-temp
-#loadrt pid names=pid.hbp-temp,pid.e0-temp
-#loadrt pid count=2
-newinst pid count=2
+newinst pid pid.hbp-temp
+newinst pid pid.e0-temp
 newinst limit1 limit1.e0-heater
 newinst limit1 limit1.hbp-heater
 newinst scale scale.f0
@@ -115,7 +112,7 @@ addf   motion-command-handler               servo-thread
 addf   motion-controller                    servo-thread
 # HBP
 addf   lowpass.hbp-temp                     servo-thread
-addf   pid.0                         servo-thread
+addf   pid.hbp-temp                         servo-thread
 addf   sum2.hbp-temp-range-neg              servo-thread
 addf   sum2.hbp-temp-range-pos              servo-thread
 addf   wcomp.hbp-temp-range                 servo-thread
@@ -128,7 +125,7 @@ addf   comp.hbp-active                      servo-thread
 # E0
 addf   scale.e0-fan-comp                    servo-thread
 addf   lowpass.e0-temp                      servo-thread
-addf   pid.1                          servo-thread
+addf   pid.e0-temp                          servo-thread
 addf   limit1.e0-heater                     servo-thread
 addf   sum2.e0-temp-range-neg               servo-thread
 addf   sum2.e0-temp-range-pos               servo-thread
@@ -899,10 +896,10 @@ setp lowpass.e0-temp.gain 0.003
 net e0.temp.measr   <= Therm.ch-04.value
 
 # PID
-net emcmot.00.enable  =>   pid.1.enable
-net e0.temp.meas   => pid.1.feedback
-net e0.temp.set    => pid.1.command
-net e0.heater      <= pid.1.output
+net emcmot.00.enable  =>   pid.e0-temp.enable
+net e0.temp.meas   => pid.e0-temp.feedback
+net e0.temp.set    => pid.e0-temp.command
+net e0.heater      <= pid.e0-temp.output
 net e0.heater      => limit1.e0-heater.in
 net e0.heaterl     <= limit1.e0-heater.out
 
@@ -910,7 +907,7 @@ net e0.heaterl     <= limit1.e0-heater.out
 # PWM mimics hm2 implementation, which generates output for negative values
 setp limit1.e0-heater.min 0.0
 setp limit1.e0-heater.max 1.0
-net e0.temp.pwm.max => pid.1.maxoutput
+net e0.temp.pwm.max => pid.e0-temp.maxoutput
 sets e0.temp.pwm.max [EXTRUDER_0]PWM_MAX
 
 # Temperature checking
@@ -955,11 +952,11 @@ net e0.heaterl => comp.e0-active.in1
 net e0.active  <= comp.e0-active.out
 
 # PID control linking
-net e0.pid.Pgain       fdm-e0-pid.Pgain     <=> pid.1.Pgain
-net e0.pid.Igain       fdm-e0-pid.Igain     <=> pid.1.Igain
-net e0.pid.Dgain       fdm-e0-pid.Dgain     <=> pid.1.Dgain
-net e0.pid.maxerrorI   fdm-e0-pid.maxerrorI <=> pid.1.maxerrorI
-#net e0.pid.bias        fdm-e0-pid.bias      <=> pid.1.bias
+net e0.pid.Pgain       fdm-e0-pid.Pgain     <=> pid.e0-temp.Pgain
+net e0.pid.Igain       fdm-e0-pid.Igain     <=> pid.e0-temp.Igain
+net e0.pid.Dgain       fdm-e0-pid.Dgain     <=> pid.e0-temp.Dgain
+net e0.pid.maxerrorI   fdm-e0-pid.maxerrorI <=> pid.e0-temp.maxerrorI
+#net e0.pid.bias        fdm-e0-pid.bias      <=> pid.e0-temp.bias
 net e0.temp.limit.min  => fdm-e0-pid.min
 net e0.temp.limit.max  => fdm-e0-pid.max
 net e0.temp.set       <=> fdm-e0-pid.command
@@ -967,9 +964,9 @@ net e0.temp.meas       => fdm-e0-pid.feedback
 net e0.heater          => fdm-e0-pid.output
 
 # PID parameters
-#setp pid.1.FF0      0
-#setp pid.1.FF1      0
-#setp pid.1.FF2      0
+#setp pid.e0-temp.FF0      0
+#setp pid.e0-temp.FF1      0
+#setp pid.e0-temp.FF2      0
 sets e0.pid.Pgain     [EXTRUDER_0]PID_PGAIN
 sets e0.pid.Igain     [EXTRUDER_0]PID_IGAIN
 sets e0.pid.Dgain     [EXTRUDER_0]PID_DGAIN
@@ -985,7 +982,7 @@ sets e0.temp.standby           [EXTRUDER_0]TEMP_STANDBY
 
 # Fan compensation
 net f0.pwm => scale.e0-fan-comp.in
-net e0.pid.bias pid.1.bias <= scale.e0-fan-comp.out
+net e0.pid.bias pid.e0-temp.bias <= scale.e0-fan-comp.out
 setp scale.e0-fan-comp.gain [EXTRUDER_0]FAN_BIAS
 
 # Thermistor checking
@@ -1022,10 +1019,10 @@ setp lowpass.hbp-temp.gain 0.003
 net hbp.temp.measr   <= Therm.ch-05.value
 
 # PID
-net emcmot.00.enable => pid.0.enable
-net hbp.temp.meas    => pid.0.feedback
-net hbp.temp.set     => pid.0.command
-net hbp.heater       <= pid.0.output
+net emcmot.00.enable => pid.hbp-temp.enable
+net hbp.temp.meas    => pid.hbp-temp.feedback
+net hbp.temp.set     => pid.hbp-temp.command
+net hbp.heater       <= pid.hbp-temp.output
 net hbp.heater       => limit1.hbp-heater.in
 net hbp.heaterl      <= limit1.hbp-heater.out
 
@@ -1033,7 +1030,7 @@ net hbp.heaterl      <= limit1.hbp-heater.out
 # PWM mimics hm2 implementation, which generates output for negative values
 setp limit1.hbp-heater.min 0
 setp limit1.hbp-heater.max [HBP]PWM_MAX
-net hbp.temp.pwm.max => pid.0.maxoutput
+net hbp.temp.pwm.max => pid.hbp-temp.maxoutput
 sets hbp.temp.pwm.max [HBP]PWM_MAX
 
 # Temperature checking
@@ -1077,14 +1074,14 @@ net hbp.heaterl => comp.hbp-active.in1
 net hbp.active  <= comp.hbp-active.out
 
 # PID parameters
-#setp pid.0.FF0      0
-#setp pid.0.FF1      0
-#setp pid.0.FF2      0
-setp pid.0.Pgain     [HBP]PID_PGAIN
-setp pid.0.Igain     [HBP]PID_IGAIN
-setp pid.0.Dgain     [HBP]PID_DGAIN
-setp pid.0.maxerrorI [HBP]PID_MAXERRORI
-setp pid.0.bias      [HBP]PID_BIAS
+#setp pid.hbp-temp.FF0      0
+#setp pid.hbp-temp.FF1      0
+#setp pid.hbp-temp.FF2      0
+setp pid.hbp-temp.Pgain     [HBP]PID_PGAIN
+setp pid.hbp-temp.Igain     [HBP]PID_IGAIN
+setp pid.hbp-temp.Dgain     [HBP]PID_DGAIN
+setp pid.hbp-temp.maxerrorI [HBP]PID_MAXERRORI
+setp pid.hbp-temp.bias      [HBP]PID_BIAS
 
 # Parameters
 sets hbp.temp.range.pos_error [HBP]TEMP_RANGE_POS_ERROR
@@ -1251,7 +1248,7 @@ setp hpg.pwmgen.00.out.05.enable    1
 #net f1.pwm  => hpg.pwmgen.00.out.05.value
 net exp0.fan.pwm => hpg.pwmgen.00.out.05.value
 
-net e0.temp.set     => pid.1.command
+net e0.temp.set     => pid.e0-temp.command
 
 # Limit heater PWM to positive values
 # PWM mimics hm2 implementation, which generates output for negative values
