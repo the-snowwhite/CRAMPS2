@@ -7,8 +7,6 @@
 #
 # ########################################
 
-# start haltalk server
-loadusr -W haltalk
 
 
 # ###################################
@@ -1418,3 +1416,5 @@ setp storage.read-trigger 1 # trigger read
 
 # start haltalk server after everything is initialized 
 # else binding the remote components on the UI might fail
+# start haltalk server
+loadusr -W haltalk
