@@ -43,7 +43,8 @@ loadusr -Wn Therm hal_temp_bbb -n Therm -c 04:[HBP]THERMISTOR,05:[EXTRUDER_0]THE
 #newinst pid pid.hbp-temp
 #newinst pid pid.e0-temp
 #loadrt pid names=pid.hbp-temp,pid.e0-temp
-loadrt pid count=2
+#loadrt pid count=2
+newinst pid count=2
 newinst limit1 limit1.e0-heater
 newinst limit1 limit1.hbp-heater
 newinst scale scale.f0
