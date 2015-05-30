@@ -62,7 +62,7 @@ newinst lowpass lowpass.e0-temp
 newinst lowpass lowpass.hbp-temp
 newinst sum2 sum2.e0-temp-range-neg
 newinst sum2 sum2.e0-temp-range-pos
-newinst sum2 sum2.sum2.hbp-temp-range-neg
+newinst sum2 sum2.hbp-temp-range-neg
 newinst sum2 sum2.hbp-temp-range-pos
 newinst sum2 sum2.extrude-rate-adj
 #loadrt and2 names=and2.probe,and2.x-lim,and2.z-lim
