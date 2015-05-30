@@ -10,7 +10,7 @@ from machinekit import launcher
 #from machinekit import config
 
 launcher.register_exit_handler()
-launcher.set_debug_level(5)
+#launcher.set_debug_level(5)
 launcher.set_machinekit_ini('machinekit.ini')
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 #c = config.Config()
@@ -34,11 +34,10 @@ try:
     if args.video:
         launcher.start_process('videoserver --ini video.ini Webcam1')
     launcher.start_process('linuxcnc MibRapX.ini')
-    while True:
-      launcher.check_processes()
-      sleep(1)
 except subprocess.CalledProcessError:
     launcher.end_session()
     sys.exit(1)
 
-exit(0)
+while True:
+  sleep(1)
+  launcher.check_processes()
