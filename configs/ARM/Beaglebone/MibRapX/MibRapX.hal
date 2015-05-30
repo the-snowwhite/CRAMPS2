@@ -39,7 +39,7 @@ loadrt [PRUCONF](DRIVER) prucode=$(HAL_RTMOD_DIR)/[PRUCONF](PRUBIN) [PRUCONF](CO
 # c = analog input channel and thermistor table
 loadusr -Wn Therm hal_temp_bbb -n Therm -c 04:[HBP]THERMISTOR,05:[EXTRUDER_0]THERMISTOR -b [CAPE]BOARD
 
-3# other components
+# other components
 #newinst pid pid.hbp-temp
 #newinst pid pid.e0-temp
 newinst pid names=pid.hbp-temp,pid.e0-temp
