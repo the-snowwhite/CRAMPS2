@@ -34,10 +34,11 @@ try:
     if args.video:
         launcher.start_process('videoserver --ini video.ini Webcam1')
     launcher.start_process('linuxcnc MibRapX.ini')
+    while True:
+      launcher.check_processes()
+      sleep(1)
 except subprocess.CalledProcessError:
     launcher.end_session()
     sys.exit(1)
 
-while True:
-    sleep(1)
-    launcher.check_processes()
+exit(0)
