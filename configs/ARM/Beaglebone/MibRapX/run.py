@@ -33,7 +33,7 @@ try:
     launcher.start_process("configserver -n MibRap-X ~/Machineface")
     if args.video:
         launcher.start_process('videoserver --ini video.ini Webcam1')
-    launcher.start_process('linuxcnc MibRapX.ini')
+    launcher.start_process('halrun -i MibRapX.ini -I MibRapX.hal')
 except subprocess.CalledProcessError:
     launcher.end_session()
     sys.exit(1)
