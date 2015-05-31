@@ -776,7 +776,7 @@ setp bb_gpio.p8.in-09.invert 1
 setp bb_gpio.p9.in-11.invert 1
 setp bb_gpio.p9.in-13.invert 1
 
-net home-y      <= gantry.y.home
+#net home-y      <= gantry.y.home
 net home-z      <= gantry.z.home
 
 net limit-x-zlb-home => and2.x-lim.in0 and2.z-lim.in0
@@ -791,8 +791,8 @@ net x-lim-and => axis.0.home-sw-in
 
 net home-y        => axis.1.home-sw-in
 net home-z        => axis.2.home-sw-in
-net limit-yr-home => gantry.y.joint.00.home
-net limit-yl-home => gantry.y.joint.01.home
+#net limit-yr-home => gantry.y.joint.00.home
+#net limit-yl-home => gantry.y.joint.01.home
 
 net z-lim-and <= and2.z-lim.out
 
@@ -802,14 +802,13 @@ net limit-zlf-home => gantry.z.joint.02.home
 net limit-zrf-home => gantry.z.joint.03.home
 
 net y-homing <= axis.1.homing
-net y-homing => gantry.y.homing
+#net y-homing => gantry.y.homing
 
 net z-homing <= axis.2.homing
 net z-homing => gantry.z.homing and2.z-lim.in1
-#net z-homing => and2.z-lim.in1
 
-net home-offset-yr => gantry.y.joint.00.home-offset
-net home-offset-yl => gantry.y.joint.01.home-offset
+#net home-offset-yr => gantry.y.joint.00.home-offset
+#net home-offset-yl => gantry.y.joint.01.home-offset
 
 net home-offset-zlb => gantry.z.joint.00.home-offset
 net home-offset-zrb => gantry.z.joint.01.home-offset
