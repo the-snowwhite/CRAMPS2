@@ -30,7 +30,7 @@ loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=5 num_ai
 
 # Gantry component for Y and Z Axis
 #loadrt gantry_latching names=gantry.y,gantry.z personality=2,4
-newinst lgantry gantry.y pincount=2
+#newinst lgantry gantry.y pincount=2
 newinst lgantry gantry.z pincount=4
 
 # load low-level drivers
@@ -74,7 +74,7 @@ loadrt reset names=reset.extruder-en1,reset.extruder-en2
 
 addf   hpg.capture-position                 servo-thread
 addf   bb_gpio.read                         servo-thread
-addf   gantry.y.read                        servo-thread
+#addf   gantry.y.read                        servo-thread
 addf   gantry.z.read                        servo-thread
 addf   motion-command-handler               servo-thread
 #addf   f2u.probe-sel                        servo-thread
@@ -158,7 +158,7 @@ addf oneshot.retract                        servo-thread
 addf mux4.ve                                servo-thread
 
 # Update functions
-addf   gantry.y.write                       servo-thread
+#addf   gantry.y.write                       servo-thread
 addf   gantry.z.write                       servo-thread
 addf   hpg.update                           servo-thread
 addf   bb_gpio.write                        servo-thread
@@ -341,18 +341,25 @@ sets emcmot.01.enable FALSE
 net emcmot.01.enable <= axis.1.amp-enable-out 
 net emcmot.01.enable => hpg.stepgen.01.enable
 
-setp gantry.y.search-vel            [AXIS_1]HOME_SEARCH_VEL
+#setp gantry.y.search-vel            [AXIS_1]HOME_SEARCH_VEL
 
 # position command and feedback
 net emcmot.01.pos-cmd <= axis.1.motor-pos-cmd
-net emcmot.01.pos-cmd => gantry.y.position-cmd
-net motor.01.pos-cmd <= gantry.y.joint.00.pos-cmd
-net motor.01.pos-cmd => hpg.stepgen.01.position-cmd
+net emcmot.01.pos-cmd => hpg.stepgen.01.position-cmd
 
-net emcmot.01.pos-fb <= gantry.y.position-fb
-net emcmot.01.pos-fb => axis.1.motor-pos-fb
 net motor.01.pos-fb <= hpg.stepgen.01.position-fb
-net motor.01.pos-fb => gantry.y.joint.00.pos-fb
+net motor.01.pos-fb => axis.1.motor-pos-fb
+
+# position command and feedback
+#net emcmot.01.pos-cmd <= axis.1.motor-pos-cmd
+#net emcmot.01.pos-cmd => gantry.y.position-cmd
+#net motor.01.pos-cmd <= gantry.y.joint.00.pos-cmd
+#net motor.01.pos-cmd => hpg.stepgen.01.position-cmd
+
+#net emcmot.01.pos-fb <= gantry.y.position-fb
+#net emcmot.01.pos-fb => axis.1.motor-pos-fb
+#net motor.01.pos-fb <= hpg.stepgen.01.position-fb
+#net motor.01.pos-fb => gantry.y.joint.00.pos-fb
 
 
 # timing parameters
@@ -377,31 +384,30 @@ setp hpg.stepgen.01.dirpin          [AXIS_1]DIRPIN_RIGHT
 # ################
 
 # axis enable chain
-net emcmot.01.enable => hpg.stepgen.02.enable
+#net emcmot.01.enable => hpg.stepgen.02.enable
 
 # position command and feedback
-net motor.02.pos-cmd <= gantry.y.joint.01.pos-cmd
-net motor.02.pos-cmd => hpg.stepgen.02.position-cmd
+#net motor.02.pos-cmd <= gantry.y.joint.01.pos-cmd
+#net motor.02.pos-cmd => hpg.stepgen.02.position-cmd
 
-net motor.02.pos-fb <= hpg.stepgen.02.position-fb
-net motor.02.pos-fb => gantry.y.joint.01.pos-fb
+#net motor.02.pos-fb <= hpg.stepgen.02.position-fb
+#net motor.02.pos-fb => gantry.y.joint.01.pos-fb
 
 
 # timing parameters
-setp hpg.stepgen.02.dirsetup        [AXIS_1]DIRSETUP
-setp hpg.stepgen.02.dirhold         [AXIS_1]DIRHOLD
+#setp hpg.stepgen.02.dirsetup        [AXIS_1]DIRSETUP
+#setp hpg.stepgen.02.dirhold         [AXIS_1]DIRHOLD
 
-setp hpg.stepgen.02.steplen         [AXIS_1]STEPLEN
-setp hpg.stepgen.02.stepspace       [AXIS_1]STEPSPACE
+#setp hpg.stepgen.02.steplen         [AXIS_1]STEPLEN
+#setp hpg.stepgen.02.stepspace       [AXIS_1]STEPSPACE
 
-setp hpg.stepgen.02.position-scale  [AXIS_1]SCALE
+#setp hpg.stepgen.02.position-scale  [AXIS_1]SCALE
 
-setp hpg.stepgen.02.maxvel          [AXIS_1]STEPGEN_MAX_VEL
-setp hpg.stepgen.02.maxaccel        [AXIS_1]STEPGEN_MAX_ACC
+#setp hpg.stepgen.02.maxvel          [AXIS_1]STEPGEN_MAX_VEL
+#setp hpg.stepgen.02.maxaccel        [AXIS_1]STEPGEN_MAX_ACC
 
-#setp hpg.stepgen.02.step_type       0
-setp hpg.stepgen.02.steppin         [AXIS_1]STEPPIN_LEFT
-setp hpg.stepgen.02.dirpin          [AXIS_1]DIRPIN_LEFT
+#setp hpg.stepgen.02.steppin         [AXIS_1]STEPPIN_LEFT
+#setp hpg.stepgen.02.dirpin          [AXIS_1]DIRPIN_LEFT
 
 
 # ################
