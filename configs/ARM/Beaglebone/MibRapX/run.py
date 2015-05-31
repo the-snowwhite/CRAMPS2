@@ -16,13 +16,13 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 c = config.Config()
 os.environ["MACHINEKIT_INI"] = c.MACHINEKIT_INI
 
-#parser = argparse.ArgumentParser(description='This is the MibRap-X run script '
-#                                 'it demonstrates how a run script could look like '
-#                                 'and of course starts the MibRapX config')
+parser = argparse.ArgumentParser(description='This is the MibRap-X run script '
+                                 'it demonstrates how a run script could look like '
+                                 'and of course starts the MibRapX config')
 
-#parser.add_argument('-v', '--video', help='Starts the video server', action='store_true')
+parser.add_argument('-v', '--video', help='Starts the video server', action='store_true')
 
-#args = parser.parse_args()
+args = parser.parse_args()
 
 try:
     launcher.check_installation()
@@ -31,10 +31,9 @@ try:
     launcher.install_comp('thermistor_check.comp')
     launcher.install_comp('reset.comp')
     launcher.start_process("configserver -n MibRap-X ~/Machineface")
-#    if args.video:
-#        launcher.start_process('videoserver --ini video.ini Webcam1')
+    if args.video:
+        launcher.start_process('videoserver --ini video.ini Webcam1')
     launcher.start_process('linuxcnc MibRapX.ini')
-#    launcher.start_process('halrun -i MibRapX.ini -I MibRapX.hal')
 except subprocess.CalledProcessError:
     launcher.end_session()
     sys.exit(1)

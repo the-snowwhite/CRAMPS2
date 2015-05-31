@@ -7,7 +7,8 @@
 #
 # ########################################
 
-
+# start haltalk server
+#loadusr -W haltalk
 
 # ###################################
 # Core EMC/HAL Loads
@@ -34,72 +35,41 @@ newinst lgantry gantry.z pincount=4
 
 # load low-level drivers
 loadrt hal_bb_gpio output_pins=826,914,923,925 input_pins=807,808,809,810,817,911,913
-loadrt [PRUCONF](DRIVER) prucode=$(HAL_RTMOD_DIR)/[PRUCONF](PRUBIN) [PRUCONF](CONFIG) halname=hpg
+loadrt [PRUCONF](DRIVER) prucode=$(HAL_RTMOD_DIR)/[PRUCONF](PRUBIN) [PRUCONF](CONFIG) halname=hpg pru_period=5000
 
 # Python user-mode HAL module to read ADC value and generate a thermostat output for PWM
 # c = analog input channel and thermistor table
 loadusr -Wn Therm hal_temp_bbb -n Therm -c 04:[HBP]THERMISTOR,05:[EXTRUDER_0]THERMISTOR -b [CAPE]BOARD
 
 # other components
-newinst pid pid.hbp-temp
-newinst pid pid.e0-temp
-newinst limit1 limit1.e0-heater
-newinst limit1 limit1.hbp-heater
-newinst scale scale.f0
-newinst scale scale.f1
-newinst scale scale.e0-fan-comp
+loadrt pid names=pid.e0-temp,pid.hbp-temp
+loadrt limit1 names=limit1.e0-heater,limit1.hbp-heater
+loadrt scale names=scale.f0,scale.f1,scale.e0-fan-comp
 #loadrt led_dim names=led-dim.l0-r,led-dim.l0-g,led-dim.l0-b,led-dim.l0-w
 #loadrt charge_pump
 loadrt thermistor_check names=thermistor-check.e0,thermistor-check.hbp
-newinst not not.e0-temp-range
-newinst not not.hbp-temp-range
-newinst not not.e0-error
-newinst not not.hbp-error
-newinst wcomp wcomp.e0-temp-range
-newinst wcomp wcomp.hbp-temp-range
-newinst wcomp wcomp.e0-temp-limit
-newinst wcomp wcomp.hbp-temp-limit
-newinst lowpass lowpass.e0-temp
-newinst lowpass lowpass.hbp-temp
-newinst sum2 sum2.e0-temp-range-neg
-newinst sum2 sum2.e0-temp-range-pos
-newinst sum2 sum2.hbp-temp-range-neg
-newinst sum2 sum2.hbp-temp-range-pos
-newinst sum2 sum2.extrude-rate-adj
+loadrt not names=not.e0-temp-range,not.hbp-temp-range,not.e0-error,not.hbp-error
+loadrt wcomp names=wcomp.e0-temp-range,wcomp.hbp-temp-range,wcomp.e0-temp-limit,wcomp.hbp-temp-limit
+loadrt lowpass names=lowpass.e0-temp,lowpass.hbp-temp
+loadrt sum2 names=sum2.e0-temp-range-neg,sum2.e0-temp-range-pos,sum2.hbp-temp-range-neg,sum2.hbp-temp-range-pos,sum2.extrude-rate-adj
 #loadrt and2 names=and2.probe,and2.x-lim,and2.z-lim
-newinst and2 and2.x-lim
-newinst and2 and2.z-lim
-newinst mux2 mux2.exp0-pwm
-newinst mux2 mux2.ve-base-vel
-newinst mux2 mux2.jog-velocity-signed
+loadrt and2 names=and2.x-lim,and2.z-lim
+loadrt mux2 names=mux2.exp0-pwm,mux2.ve-base-vel,mux2.jog-velocity-signed
 loadrt logic names=estopchain,and3.e0-no-error,and3.hbp-no-error personality=0x106,0x103,0x103 # and 8 and 3 inputs
-newinst comp comp.exp0-temp
-newinst comp comp.hbp-hot
-newinst comp comp.e0-active
-newinst comp comp.hbp-active
-newinst select8 select8.extruder
+loadrt comp names=comp.exp0-temp,comp.hbp-hot,comp.e0-active,comp.hbp-active
+loadrt select8 names=select8.extruder
 #loadrt watchdog num_inputs=3
 #loadrt mux_generic config=bb4 # mux-gen.00 for probe
 #loadrt conv_float_u32 names=f2u.probe-sel
 
-newinst hypot hypot.nozzle-vel
-newinst mult2 mult2.nozzle-discharge
-newinst mult2 mult2.filament-dia
-newinst mult2 mult2.filament-area
-newinst mult2 mult2.extrude-accel-adj
-newinst mult2 mult2.ve-jog-dtg
-newinst mult2 mult2.retract-vel-neg
-newinst mult2 mult2.extrude-rate-scaled
-newinst mult2 mult2.jog-velocity-neg
-newinst div2 div2.extrude-rate
-newinst div2 div2.retract-time
-newinst div2 div2.ve-jog-time
-newinst mux4 mux4.ve
-newinst oneshot oneshot.retract
-newinst oneshot oneshot.ve-jog
-newinst ddt ddt.extruder-accel
-newinst or2 or2.ve-jog-enable
-newinst abs abs.nozzle-vel
+loadrt hypot names=hypot.nozzle-vel
+loadrt mult2 names=mult2.nozzle-discharge,mult2.filament-dia,mult2.filament-area,mult2.extrude-accel-adj,mult2.ve-jog-dtg,mult2.retract-vel-neg,mult2.extrude-rate-scaled,mult2.jog-velocity-neg
+loadrt div2 names=div2.extrude-rate,div2.retract-time,div2.ve-jog-time
+loadrt mux4 names=mux4.ve
+loadrt oneshot names=oneshot.retract,oneshot.ve-jog
+loadrt ddt names=ddt.extruder-accel
+loadrt or2 names=or2.ve-jog-enable
+loadrt abs names=abs.nozzle-vel
 loadrt reset names=reset.extruder-en1,reset.extruder-en2
 
 addf   hpg.capture-position                 servo-thread
@@ -113,7 +83,7 @@ addf   motion-command-handler               servo-thread
 addf   motion-controller                    servo-thread
 # HBP
 addf   lowpass.hbp-temp                     servo-thread
-addf   pid.hbp-temp.do-pid-calcs            servo-thread
+addf   pid.hbp-temp                         servo-thread
 addf   sum2.hbp-temp-range-neg              servo-thread
 addf   sum2.hbp-temp-range-pos              servo-thread
 addf   wcomp.hbp-temp-range                 servo-thread
@@ -126,7 +96,7 @@ addf   comp.hbp-active                      servo-thread
 # E0
 addf   scale.e0-fan-comp                    servo-thread
 addf   lowpass.e0-temp                      servo-thread
-addf   pid.e0-temp.do-pid-calcs             servo-thread
+addf   pid.e0-temp                          servo-thread
 addf   limit1.e0-heater                     servo-thread
 addf   sum2.e0-temp-range-neg               servo-thread
 addf   sum2.e0-temp-range-pos               servo-thread
@@ -1416,5 +1386,4 @@ setp storage.read-trigger 1 # trigger read
 
 # start haltalk server after everything is initialized 
 # else binding the remote components on the UI might fail
-# start haltalk server
 loadusr -W haltalk
