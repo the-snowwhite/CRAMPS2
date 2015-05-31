@@ -54,7 +54,7 @@ description """
 Component to reset IO signals.
 """;
 license "GPL";
-variable bool last_trigger = 0;
+variable hal_bit_t last_trigger = 0;
 ;;
 FUNCTION(_) {
     if (((rising && (trigger == 1)) || (falling && (trigger == 0)))
