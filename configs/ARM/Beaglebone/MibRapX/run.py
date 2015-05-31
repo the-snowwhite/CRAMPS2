@@ -17,8 +17,8 @@ c = config.Config()
 os.environ["MACHINEKIT_INI"] = c.MACHINEKIT_INI
 
 #parser = argparse.ArgumentParser(description='This is the MibRap-X run script '
-                                 'it demonstrates how a run script could look like '
-                                 'and of course starts the MibRapX config')
+#                                 'it demonstrates how a run script could look like '
+#                                 'and of course starts the MibRapX config')
 
 #parser.add_argument('-v', '--video', help='Starts the video server', action='store_true')
 
