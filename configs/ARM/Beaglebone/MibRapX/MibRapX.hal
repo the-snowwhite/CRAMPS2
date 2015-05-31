@@ -42,8 +42,9 @@ loadrt [PRUCONF](DRIVER) prucode=$(HAL_RTMOD_DIR)/[PRUCONF](PRUBIN) [PRUCONF](CO
 loadusr -Wn Therm hal_temp_bbb -n Therm -c 04:[HBP]THERMISTOR,05:[EXTRUDER_0]THERMISTOR -b [CAPE]BOARD
 
 # other components
-#loadrt pid names=pid.e0-temp,pid.hbp-temp
-newinst pid pid.hbp-temp, pid.e0-temp
+loadrt pid names=pid.e0-temp,pid.hbp-temp
+#newinst pid pid.hbp-temp 
+#newinst pid.e0-temp
 loadrt limit1 names=limit1.e0-heater,limit1.hbp-heater
 loadrt scale names=scale.f0,scale.f1,scale.e0-fan-comp
 #loadrt led_dim names=led-dim.l0-r,led-dim.l0-g,led-dim.l0-b,led-dim.l0-w
