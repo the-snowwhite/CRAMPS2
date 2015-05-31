@@ -83,7 +83,7 @@ addf   motion-command-handler               servo-thread
 addf   motion-controller                    servo-thread
 # HBP
 addf   lowpass.hbp-temp                     servo-thread
-addf   pid.hbp-temp                         servo-thread
+addf   pid.hbp-temp.do-pid-calcs            servo-thread
 addf   sum2.hbp-temp-range-neg              servo-thread
 addf   sum2.hbp-temp-range-pos              servo-thread
 addf   wcomp.hbp-temp-range                 servo-thread
@@ -96,7 +96,7 @@ addf   comp.hbp-active                      servo-thread
 # E0
 addf   scale.e0-fan-comp                    servo-thread
 addf   lowpass.e0-temp                      servo-thread
-addf   pid.e0-temp                          servo-thread
+addf   pid.e0-temp.do-pid-calcs             servo-thread
 addf   limit1.e0-heater                     servo-thread
 addf   sum2.e0-temp-range-neg               servo-thread
 addf   sum2.e0-temp-range-pos               servo-thread
