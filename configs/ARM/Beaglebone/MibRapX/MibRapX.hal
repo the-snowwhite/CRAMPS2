@@ -785,8 +785,8 @@ net x-lim-and => axis.0.home-sw-in
 
 net home-y        => axis.1.home-sw-in
 net home-z        => axis.2.home-sw-in
-net limit-yr-home => gantry.y.joint.00.home
-net limit-yl-home => gantry.y.joint.01.home
+net limit-yr-home => gantry.y.joint.00.home => gantry.y.joint.02.home
+net limit-yl-home => gantry.y.joint.01.home => gantry.y.joint.03.home
 
 net z-lim-and <= and2.z-lim.out
 
