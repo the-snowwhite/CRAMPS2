@@ -24,14 +24,10 @@ loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=5 num_ai
 # THREADS
 #loadrt threads name1=run-thread period1=50170000
 
-# Gantry component for Y Axis
-#loadrt gantry_latching names=gantry.y personality=2
-#newinst lgantry gantry.z pincount=2
-
 # Gantry component for Y and Z Axis
 #loadrt gantry_latching names=gantry.y,gantry.z personality=2,4
+newinst lgantry gantry.y pincount=2
 newinst lgantry gantry.z pincount=4
-newinst lgantry gantry.y pincount=4
 
 # load low-level drivers
 loadrt hal_bb_gpio output_pins=826,914,923,925 input_pins=807,808,809,810,817,911,913
@@ -74,8 +70,8 @@ loadrt reset names=reset.extruder-en1,reset.extruder-en2
 
 addf   hpg.capture-position                 servo-thread
 addf   bb_gpio.read                         servo-thread
-addf   gantry.z.read                        servo-thread
 addf   gantry.y.read                        servo-thread
+addf   gantry.z.read                        servo-thread
 addf   motion-command-handler               servo-thread
 #addf   f2u.probe-sel                        servo-thread
 #addf   mux-gen.00                           servo-thread
@@ -158,8 +154,8 @@ addf oneshot.retract                        servo-thread
 addf mux4.ve                                servo-thread
 
 # Update functions
-addf   gantry.z.write                       servo-thread
 addf   gantry.y.write                       servo-thread
+addf   gantry.z.write                       servo-thread
 addf   hpg.update                           servo-thread
 addf   bb_gpio.write                        servo-thread
 
@@ -785,8 +781,8 @@ net x-lim-and => axis.0.home-sw-in
 
 net home-y        => axis.1.home-sw-in
 net home-z        => axis.2.home-sw-in
-net limit-yr-home => gantry.y.joint.00.home => gantry.y.joint.02.home
-net limit-yl-home => gantry.y.joint.01.home => gantry.y.joint.03.home
+net limit-yr-home => gantry.y.joint.00.home
+net limit-yl-home => gantry.y.joint.01.home
 
 net z-lim-and <= and2.z-lim.out
 
@@ -800,7 +796,6 @@ net y-homing => gantry.y.homing
 
 net z-homing <= axis.2.homing
 net z-homing => gantry.z.homing and2.z-lim.in1
-#net z-homing => and2.z-lim.in1
 
 net home-offset-yr => gantry.y.joint.00.home-offset
 net home-offset-yl => gantry.y.joint.01.home-offset
