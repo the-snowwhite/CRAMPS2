@@ -12,7 +12,7 @@ from config import storage
 
 # HAL file for BeagleBone + TCT paralell port cape with 5 steppers and 3D printer board
 rt.init_RTAPI()
-c.load_ini('UNIPRINT-3D.ini')
+c.load_ini('test.ini')
 
 base.setup_motion()
 uniprint_3d.init_hardware()
