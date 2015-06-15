@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from machinekit import hal
 
 hal.epsilon[1] = 0.1
