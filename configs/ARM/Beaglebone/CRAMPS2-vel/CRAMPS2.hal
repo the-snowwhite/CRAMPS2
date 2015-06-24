@@ -7,9 +7,6 @@
 #
 # ########################################
 
-# start haltalk server
-loadusr -W haltalk
-
 # ###################################
 # Core EMC/HAL Loads
 # ###################################
@@ -1237,3 +1234,6 @@ net ve.filament-dia    <=> storage.filament.diameter
 net ve.jog-velocity    <=> storage.extruder.jog-velocity
 setp storage.read-trigger 1 # trigger read
 
+# start haltalk server after everything is initialized 
+# else binding the remote components on the UI might fail
+loadusr -W haltalk
