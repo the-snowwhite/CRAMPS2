@@ -442,7 +442,7 @@ setp hpg.stepgen.03.dirpin          [AXIS_2]DIRPIN_LEFT_BACK
 
 
 # ################
-# Z [3] Axis Right - Back- Gantry
+# Z [2] Axis Right - Back- Gantry
 # ################
 
 # axis enable chain
@@ -501,7 +501,7 @@ setp hpg.stepgen.05.steppin         [AXIS_2]STEPPIN_LEFT_FRONT
 setp hpg.stepgen.05.dirpin          [AXIS_2]DIRPIN_LEFT_FRONT
 
 # ################
-# Z [3] Axis Right - Front - Gantry
+# Z [2] Axis Right - Front - Gantry
 # ################
 
 # axis enable chain
@@ -532,7 +532,7 @@ setp hpg.stepgen.06.dirpin          [AXIS_2]DIRPIN_RIGHT_FRONT
 
 
 # ################
-# A [4] Axis (Extruder) - Velocity control
+# A [3] Axis (Extruder) - Velocity control
 # ################
 
 # take all the actual speeds from the axes and calculate resulting speed.
