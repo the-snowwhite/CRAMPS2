@@ -29,7 +29,7 @@ try:
     launcher.load_bbio_file('cramps2_cape.bbio')
     launcher.install_comp('thermistor_check.comp')
     launcher.install_comp('reset.comp')
-    launcher.start_process("configserver -n Prusa-i3 ~/Machineface ~/Cetus")
+    launcher.start_process("configserver -n Prusa-i3 ~/Machineface ")
     if args.video:
         launcher.start_process('videoserver --ini video.ini Webcam1')
     launcher.start_process('linuxcnc CRAMPS2.ini')
