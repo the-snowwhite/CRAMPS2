@@ -1110,8 +1110,8 @@ net f1.set               <= motion.analog-out-io-13
 #net l0.w                <= motion.analog-out-io-29
 #net probe.sel-f         <= motion.analog-out-38
 net ve.cross-section     <= motion.analog-out-41
-net ve.line-width        <= motion.analog-out-io-42
-net ve.line-height       <= motion.analog-out-io-43
+net ve.line-width        <= motion.analog-out-42
+net ve.line-height       <= motion.analog-out-43
 net ve.filament-dia      <= motion.analog-out-io-44
 net ve.jog-velocity      <= motion.analog-out-io-45
 net ve.jog-distance      <= motion.analog-out-io-46
@@ -1135,8 +1135,7 @@ net f1.set               => motion.analog-in-13
 net hbp.temp.in-range    => motion.digital-in-00
 #net hbc.temp.in-range   => motion.digital-in-01
 net e0.temp.in-range     => motion.digital-in-02
-net ve.retract           => motion.digital-in-12
-net ve.jog-trigger       => motion.digital-in-13
+net ve.jog-trigger       => motion.digital-in-12
 
 # ##################################################
 # Estop chain #, watchdog and charge-pump
