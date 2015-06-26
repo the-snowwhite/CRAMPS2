@@ -417,19 +417,19 @@ net motor.04.pos-fb => gantry.z.joint.01.pos-fb
 
 
 # timing parameters
-setp hpg.stepgen.02.dirsetup        [AXIS_2]DIRSETUP
-setp hpg.stepgen.02.dirhold         [AXIS_2]DIRHOLD
+setp hpg.stepgen.04.dirsetup        [AXIS_2]DIRSETUP
+setp hpg.stepgen.04.dirhold         [AXIS_2]DIRHOLD
 
-setp hpg.stepgen.02.steplen         [AXIS_2]STEPLEN
-setp hpg.stepgen.02.stepspace       [AXIS_2]STEPSPACE
+setp hpg.stepgen.04.steplen         [AXIS_2]STEPLEN
+setp hpg.stepgen.04.stepspace       [AXIS_2]STEPSPACE
 
-setp hpg.stepgen.02.position-scale  [AXIS_2]SCALE
+setp hpg.stepgen.04.position-scale  [AXIS_2]SCALE
 
-setp hpg.stepgen.02.maxvel          [AXIS_2]STEPGEN_MAX_VEL
-setp hpg.stepgen.02.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
+setp hpg.stepgen.04.maxvel          [AXIS_2]STEPGEN_MAX_VEL
+setp hpg.stepgen.04.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
 
-setp hpg.stepgen.02.steppin         [AXIS_2]STEPPIN_LEFT
-setp hpg.stepgen.02.dirpin          [AXIS_2]DIRPIN_LEFT
+setp hpg.stepgen.04.steppin         [AXIS_2]STEPPIN_LEFT
+setp hpg.stepgen.04.dirpin          [AXIS_2]DIRPIN_LEFT
 
 # ################
 # A [3] Axis (Extruder) - Velocity control
