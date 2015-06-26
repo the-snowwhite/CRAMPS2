@@ -15,9 +15,9 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 c = config.Config()
 os.environ["MACHINEKIT_INI"] = c.MACHINEKIT_INI
 
-parser = argparse.ArgumentParser(description='This is the CRAMPS2-vel run script '
+parser = argparse.ArgumentParser(description='This is the Prusa-i3 run script '
                                  'it demonstrates how a run script could look like '
-                                 'and of course starts the CRAMPS2-vel config')
+                                 'and of course starts the Prusa-i3 config')
 
 parser.add_argument('-v', '--video', help='Starts the video server', action='store_true')
 

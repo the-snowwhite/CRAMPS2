@@ -237,12 +237,12 @@ ready fdm-f1
 #newpin fdm-f3 fdm-f3.set float io
 #ready fdm-f3
 
-newcomp fdm-l0 timer=100
-newpin fdm-l0 fdm-l0.r float io
-newpin fdm-l0 fdm-l0.g float io
-newpin fdm-l0 fdm-l0.b float io
-newpin fdm-l0 fdm-l0.w float io
-ready  fdm-l0
+#newcomp fdm-l0 timer=100
+#newpin fdm-l0 fdm-l0.r float io
+#newpin fdm-l0 fdm-l0.g float io
+#newpin fdm-l0 fdm-l0.b float io
+#newpin fdm-l0 fdm-l0.w float io
+#ready  fdm-l0
 
 newcomp fdm-ve-jog timer=100
 newpin fdm-ve-jog fdm-ve-jog.distance       float io
