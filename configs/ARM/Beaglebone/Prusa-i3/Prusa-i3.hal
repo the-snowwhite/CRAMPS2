@@ -406,14 +406,14 @@ setp hpg.stepgen.02.dirpin          [AXIS_2]DIRPIN_RIGHT
 
 # axis enable chain
 
-net emcmot.02.enable => hpg.stepgen.03.enable
+net emcmot.02.enable => hpg.stepgen.04.enable
 
 # position command and feedback
-net motor.03.pos-cmd <= gantry.z.joint.01.pos-cmd
-net motor.03.pos-cmd => hpg.stepgen.03.position-cmd
+net motor.04.pos-cmd <= gantry.z.joint.01.pos-cmd
+net motor.04.pos-cmd => hpg.stepgen.04.position-cmd
 
-net motor.03.pos-fb <= hpg.stepgen.03.position-fb
-net motor.03.pos-fb => gantry.z.joint.01.pos-fb
+net motor.04.pos-fb <= hpg.stepgen.04.position-fb
+net motor.04.pos-fb => gantry.z.joint.01.pos-fb
 
 
 # timing parameters
