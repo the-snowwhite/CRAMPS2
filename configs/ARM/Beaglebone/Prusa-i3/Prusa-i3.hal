@@ -644,6 +644,8 @@ net emcmot.00.enable => bb_gpio.p9.out-25
 #newsig limit-y-max bit
 #newsig limit-z-min bit
 #newsig limit-z-max bit
+newsig home-offset-zr   float
+newsig home-offset-zl   float
 
 newsig home-z           bit
 
