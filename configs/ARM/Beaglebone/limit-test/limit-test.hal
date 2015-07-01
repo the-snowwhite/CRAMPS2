@@ -661,7 +661,7 @@ setp bb_gpio.p8.in-08.invert 1
 setp bb_gpio.p8.in-07.invert 1
 setp bb_gpio.p8.in-10.invert 1
 setp bb_gpio.p8.in-09.invert 1
-setp bb_gpio.p9.in-11.invert 1
+setp bb_gpio.p9.in-11.invert 0
 setp bb_gpio.p9.in-13.invert 1
 
 net home-z      <= gantry.z.home
