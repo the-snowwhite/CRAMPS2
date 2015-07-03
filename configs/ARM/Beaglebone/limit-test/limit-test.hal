@@ -685,8 +685,6 @@ net homing => gantry.z.homing
 net home-offset-zr => gantry.z.joint.00.home-offset
 net home-offset-zl => gantry.z.joint.01.home-offset
 
-net zr-offset => gantry.z.joint.00.offset
-sets zr-offset 10.0
 
 # ################
 # Probe
